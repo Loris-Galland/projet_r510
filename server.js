@@ -47,7 +47,8 @@ app.get('/pokedex', async (req, res)=>{
 });
 
 // --- GET /items ---
-// Récupère les objets (items), 
+
+// Récupère les objets (items)
 
 app.get('/items',async (req,res)=>{
     try {
@@ -66,6 +67,20 @@ app.get('/items',async (req,res)=>{
     }
 });
 
+// --- GET /moves ---
+// Récupère les moves
+
+app.get('/moves',async (req,res)=>{
+    try {
+        const collection = db.collection('moves');
+        const typeQuery=req.query.type;
+        let query={};
+        if (typeQuery) {
+            // On enlève le $elemMatch car c'est un String
+            query = { type: { $regex: new RegExp(`^${typeQuery}$`, 'i')}};
+        }
+        const moves=await collection.find(query).toArray();
+        res.json(moves);
 // --- GET/ types ---
 // Récupère les types (types)
 
@@ -80,6 +95,7 @@ app.get('/types',async (req,res)=>{
         res.status(500).send('erreur serveur');
     }
 });
+
 
 // Sert les fichiers statiques (HTML, CSS, JS) du dossier /public
 app.use(express.static(path.join(__dirname, 'public')));
