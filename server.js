@@ -1,18 +1,20 @@
-// server.js
+// Importation des modules nécessaires
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const path = require('path');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Autorise les requêtes entre origines différentes (ex : front et backend)
+app.use(express.json()); // Permet de lire le corps des requêtes JSON
 
+// Configuration de la connexion MongoDB
 const url='mongodb://localhost:27017';
 const client=new MongoClient(url);
 const dbName='projet_r510'; 
 let db;
 
+// Connexion unique à MongoDB
 async function initMongo() {
   try {
     await client.connect();
@@ -23,25 +25,29 @@ async function initMongo() {
   }
 }
 
-// GET pour récupérer pokemons
+// --- GET /pokedex ---
+// Récupère les Pokémon, avec ou sans filtrage par type
 app.get('/pokedex', async (req, res)=>{
     try {
         const collection = db.collection('pokedex');
-        const typeQuery = req.query.type;
+        const typeQuery = req.query.type; // Récupère le paramètre ?type= dans l’URL
         let query = {};
         if (typeQuery) {
-            // On cherche tous les Pokémon dont le tableau "type" contient ce type
+            // Si un type est précisé, on filtre les Pokémon dont le tableau "type" contient ce type
             // $elemMatch permet de matcher un élément du tableau
             query = { type: { $elemMatch: { $regex: new RegExp(`^${typeQuery}$`, 'i') } } };
         }
         
-        const pokemons=await collection.find(query).toArray();
-        res.json(pokemons);
+        const pokemons=await collection.find(query).toArray(); // Executer la requête
+        res.json(pokemons); // Renvoie le résultat au client
     }catch (err){
         console.error(err);
         res.status(500).send('erreur serveur');
     }
 });
+
+// --- GET /items ---
+// Récupère les objets (items), 
 
 app.get('/items',async (req,res)=>{
     try {
@@ -60,8 +66,25 @@ app.get('/items',async (req,res)=>{
     }
 });
 
+// --- GET/ types ---
+// Récupère les types (types)
+
+app.get('/types',async (req,res)=>{
+    try {
+        const collection = db.collection('types');
+       
+        const types=await collection.find({}).toArray();
+        res.json(types);
+    } catch (err){
+        console.error(err);
+        res.status(500).send('erreur serveur');
+    }
+});
+
+// Sert les fichiers statiques (HTML, CSS, JS) du dossier /public
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Démarre le serveur sur le port 3000
 const PORT=3000;
 app.listen(PORT, () => {
     initMongo();
