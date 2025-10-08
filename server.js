@@ -81,13 +81,17 @@ app.get('/moves',async (req,res)=>{
         }
         const moves=await collection.find(query).toArray();
         res.json(moves);
+    } catch (err){
+        console.error(err);
+        res.status(500).send('erreur serveur');
+    }
+});
 // --- GET/ types ---
 // Récupère les types (types)
 
 app.get('/types',async (req,res)=>{
     try {
         const collection = db.collection('types');
-       
         const types=await collection.find({}).toArray();
         res.json(types);
     } catch (err){
