@@ -6,7 +6,7 @@ async function chargerPokemons() {
   try {
     const reponse = await fetch(urlAPI);
     const listePokemons = await reponse.json(); // request json 
-    const conteneur = document.getElementById('pokemon-container'); //select le con teneur et le vider (pour ajout nouvelles cartes)
+    const conteneur = document.getElementById('pokemon-container'); 
     conteneur.innerHTML = '';
 
     listePokemons.forEach(pokemon => {

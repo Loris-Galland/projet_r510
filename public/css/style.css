@@ -11,3 +11,13 @@
     width: 100px;
     height: 100px;
 }
+
+.item-card {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+}
