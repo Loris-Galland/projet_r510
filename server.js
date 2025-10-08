@@ -66,6 +66,27 @@ app.get('/items',async (req,res)=>{
     }
 });
 
+// --- GET /moves ---
+// Récupère les moves
+
+app.get('/moves',async (req,res)=>{
+    try {
+        const collection = db.collection('moves');
+        const typeQuery=req.query.type;
+        let query={};
+        if (typeQuery) {
+            // On enlève le $elemMatch car c'est un String
+            query = { type: { $regex: new RegExp(`^${typeQuery}$`, 'i')}};
+        }
+        const moves=await collection.find(query).toArray();
+        res.json(moves);
+    } catch (err){
+        console.error(err);
+        res.status(500).send('erreur serveur');
+    }
+});
+
+
 // Sert les fichiers statiques (HTML, CSS, JS) du dossier /public
 app.use(express.static(path.join(__dirname, 'public')));
 
