@@ -47,7 +47,7 @@ app.get('/pokedex', async (req, res)=>{
 });
 
 // --- GET /items ---
-// Récupère les objets (items), filtrés par type si précisé
+// Récupère les objets (items), 
 
 app.get('/items',async (req,res)=>{
     try {
@@ -60,6 +60,21 @@ app.get('/items',async (req,res)=>{
         }
         const items=await collection.find(query).toArray();
         res.json(items);
+    } catch (err){
+        console.error(err);
+        res.status(500).send('erreur serveur');
+    }
+});
+
+// --- GET/ types ---
+// Récupère les types (types)
+
+app.get('/types',async (req,res)=>{
+    try {
+        const collection = db.collection('types');
+       
+        const types=await collection.find({}).toArray();
+        res.json(types);
     } catch (err){
         console.error(err);
         res.status(500).send('erreur serveur');
