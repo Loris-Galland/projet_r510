@@ -6,7 +6,7 @@ Ce projet contient une application qui intéragit avec une base MongoDB pour fai
 avec l’API via fetch().
 
 📁 Structure du projet
-
+```bash
 C:.
 ├── db
 │   └── mongo.js              → Connexion et gestion de la base MongoDB
@@ -41,7 +41,7 @@ C:.
 ├── package.json              → Configuration du projet Node.js
 ├── package-lock.json         → Détails des dépendances installées
 └── server.js                 → Point d’entrée principal du serveur Express
-
+```
 
 --------------------------------------------------
 Fonctionnement du backend (Node.js + Express)
@@ -76,19 +76,19 @@ Fonctionnement du frontend (HTML / CSS / JS)
 Lancement du projet
 ----------------------
 
-1.Installer les dépendances :
+1. Installer les dépendances :
    ```bash
    npm install
    ```
 
-2.Démarrer MongoDB (par exemple via Compass, le serveur doit être actif sur `mongodb://localhost:27017`)
+2. Démarrer MongoDB (par exemple via Compass, le serveur doit être actif sur `mongodb://localhost:27017`)
 
-3.Lancer le serveur node :
+3. Lancer le serveur node :
    ```bash
    node server.js
    ```
 
-4️.Ouvrir le navigateur à l’adresse :
+4️. Ouvrir le navigateur à l’adresse :
    [http://localhost:3000](http://localhost:3000)
 
 --------------------------------------------------
@@ -103,8 +103,8 @@ Collections attendues :
 --------------------------------------------------
 
 Auteur / Notes
-Ce projet a été réalisé à deux dans le cadre d'un projet scolaire.
 ------------------
+Ce projet a été réalisé à deux dans le cadre d'un projet scolaire.
 README provisoire créé pour documenter l’organisation du projet et son utilisation
 
 
