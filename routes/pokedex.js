@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     let query = {};
 
     if (typeQuery) {
-      query = {type:{$elemMatch:{$regex: new RegExp(`^${typeQuery}$`,'i')}}};
+      query = { type: { $elemMatch: { $regex: new RegExp(`^${typeQuery}$`, 'i') } } };
     }
 
     const pokemons = await collection.find(query).toArray(); //exec request + conversion en tab
@@ -20,6 +20,29 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('erreur serveur');
+  }
+});
+
+// GET /pokedex/search
+// rechercher les Pokémon dont le nom commence par certaines lettres
+router.get('/search', async (req, res) => {
+  try {
+    const db = getDb();
+    const collection = db.collection('pokedex');
+    const nameQuery = req.query.name || '';
+
+    if (nameQuery.trim() === '') {
+      return res.json([]);
+    }
+
+    const pokemons = await collection.find({
+      'name.french': { $regex: `^${nameQuery}`, $options: 'i' }
+    }).toArray();
+
+    res.json(pokemons);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('erreur serveur (search)');
   }
 });
 
