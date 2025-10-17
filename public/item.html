@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détail de l'item</title>
+  <link rel="stylesheet" href="/css/item-detail.css">
+</head>
+<body>
+  <div id="item-detail"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+
+    fetch(`/item/${id}`)
+      .then(res => res.json())
+      .then(item => {
+        const conteneur = document.getElementById('item-detail');
+        conteneur.innerHTML = `
+          <h1>${item.name.english}</h1>
+          <img src="${item.image || '/assets/item-placeholder.png'}" alt="${item.name.english}">
+          <p><strong>Description :</strong> ${item.description}</p>
+          <p><strong>Type :</strong> ${item.type}</p>
+          <a href="/items.html">← Retour aux items</a>
+        `;
+      })
+      .catch(err => console.error('Erreur chargement item :', err));
+  </script>
+</body>
+</html>
