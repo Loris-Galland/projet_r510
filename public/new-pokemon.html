@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer un nouveau Pokémon</title>
+  <link rel="stylesheet" href="/css/new-pokemon.css">
+</head>
+<body>
+  <div id="form-container">
+    <h1>Ajouter un nouveau Pokémon</h1>
+    <form id="newPokemonForm">
+      <label>Nom (Français) :</label>
+      <input type="text" id="nameFrench" required>
+
+      <label>Nom (Anglais) :</label>
+      <input type="text" id="nameEnglish">
+
+      <label>Type(s) (séparés par des virgules) :</label>
+      <input type="text" id="types" placeholder="ex: Fire, Flying" required>
+
+      <label>HP :</label>
+      <input type="number" id="hp" required>
+
+      <label>Attack :</label>
+      <input type="number" id="attack" required>
+
+      <label>Defense :</label>
+      <input type="number" id="defense" required>
+
+      <label>Description :</label>
+      <textarea id="description" rows="3"></textarea>
+
+      <label>Image (URL sprite) :</label>
+      <input type="text" id="sprite" placeholder="ex: https://...">
+
+      <button type="submit">Créer le Pokémon</button>
+    </form>
+
+    <a href="/pokedex.html">Retour au Pokédex</a>
+  </div>
+
+  <script src="js/new-pokemon.js"></script>
+</body>
+</html>
