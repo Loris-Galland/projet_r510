@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détail du Pokémon</title>
+  <link rel="stylesheet" href="/css/pokemon-details.css">
+</head>
+<body>
+  <div id="pokemon-detail"></div>
+
+  <script>
+    // Récupère l'ID du Pokémon depuis l'URL (ex: pokemon.html?id=xxxx)
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch(`/pokemon/${id}`)
+      .then(res => res.json()) // transformer la réponse en JSON
+      .then(pokemon => {
+        const conteneur = document.getElementById('pokemon-detail');
+        let contenu = `<h1>${pokemon.name.french}</h1>`;
+        contenu += `<img src="${pokemon.image.sprite}" alt="${pokemon.name.french}" style="width:120px;">`;
+        contenu += '<ul>';
+
+        // parcours des clés de l'objet pokemon
+        const cles = Object.keys(pokemon);
+
+        for (let i = 0; i < cles.length; i++) { // boucle sur les clés
+          const cle = cles[i]; // clé courante
+          const valeur = pokemon[cle]; // valeur associée à la clé
+          let texteValeur; // variable pour stocker le texte à afficher
+
+          // si la valeur est un objet ou un tableau, on la formate joliment
+          if (typeof valeur === 'object' && valeur !== null) { 
+            texteValeur = '<pre>' + JSON.stringify(valeur, null, 2) + '</pre>'; // formatage 
+          } else {
+            // sinon juste print la valeur
+            texteValeur = valeur;
+          }
+
+          contenu += '<li><strong>' + cle + '</strong> : ' + texteValeur + '</li>'; // ajoute à la liste
+        }
+
+        contenu += '</ul>';
+
+        // lien retour
+        contenu += '<a href="/pokedex.html" style="display:inline-block;margin-top:20px;">← Retour au Pokédex</a>'; 
+        conteneur.innerHTML = contenu;
+      })
+      .catch(err => console.error('Erreur chargement Pokémon :', err));
+  </script>
+</body>
+</html>

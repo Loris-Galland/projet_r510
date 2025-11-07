@@ -20,12 +20,18 @@ async function chargerPokemons() {
 
     listePokemons.forEach(pokemon => {
       const carte = document.createElement('div');
-      carte.className='pokemon-card';
+      carte.className = 'pokemon-card';
 
-      carte.innerHTML=
+      carte.innerHTML =
         `<h3>${pokemon.name.french}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name.french}">
         <p>Type: ${pokemon.type.join(', ')}</p>`;
+
+      // Clique sur une carte et redirige vers la page détail du Pokémon
+      carte.addEventListener('click', () => {
+        window.location.href = `pokemon.html?id=${pokemon._id}`;
+      });
+
       conteneur.appendChild(carte);
     });
 
@@ -44,7 +50,7 @@ inputRecherche.addEventListener('input', async () => {
   const recherche = inputRecherche.value.trim(); 
   const filtreType = document.getElementById('typeFilter').value; // garder le type sélectionné
 
-  // ✅ Si le champ est vide, on recharge UNIQUEMENT avec le filtre type
+  // Si le champ est vide on recharge UNIQUEMENT avec le filtre type
   if (recherche.length === 0) {
     chargerPokemons(); // cette fonction gère déjà le type
     return;
@@ -74,6 +80,12 @@ inputRecherche.addEventListener('input', async () => {
         <h3>${pokemon.name.french}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name.french}">
         <p>Type: ${pokemon.type.join(', ')}</p>`;
+
+      // Même redirection sur les résultats de recherche
+      carte.addEventListener('click', () => {
+        window.location.href = `pokemon.html?id=${pokemon._id}`;
+      });
+
       conteneur.appendChild(carte);
     });
 
