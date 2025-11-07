@@ -24,4 +24,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// DELETE /pokemon/:id
+// Supprime un Pokémon par son _id
+router.delete('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const collection = db.collection('pokedex');
+    const { id } = req.params;
+
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Pokémon non trouvé" });
+    }
+
+    res.json({ message: "Pokémon supprimé avec succès" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur lors de la suppression" });
+  }
+});
+
 module.exports = router;
