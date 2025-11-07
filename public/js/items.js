@@ -19,7 +19,7 @@ const urlAPI= filtreType ? `http://localhost:3000/items?type=${filtreType}`:'htt
         <p>Type : ${item.type}</p>
       `;
 
-      //Clic sur une carte → redirige vers /item/:id
+      //clic sur une carte -> redirige vers /item/:id
       carte.addEventListener('click', () => {
     window.location.href = `item.html?id=${item._id}`;
     });
