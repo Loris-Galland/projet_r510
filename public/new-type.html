@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer un Type Pokémon</title>
+  <link rel="stylesheet" href="/css/new-type.css">
+</head>
+<body>
+  <div id="form-container">
+    <h1>Ajouter un nouveau Type</h1>
+    <form id="newTypeForm">
+      <label>Nom (Anglais) :</label>
+      <input type="text" id="nameEnglish" required>
+
+      <label>Effective contre (séparés par des virgules) :</label>
+      <input type="text" id="effective" placeholder="ex: Fire, Water">
+
+      <label>Ineffective contre :</label>
+      <input type="text" id="ineffective" placeholder="ex: Grass">
+
+      <label>No Effect contre :</label>
+      <input type="text" id="noEffect" placeholder="ex: Electric">
+
+      <button type="submit">Créer le Type</button>
+    </form>
+
+    <a href="/types.html">← Retour aux Types</a>
+  </div>
+
+  <script src="/js/new-type.js"></script>
+</body>
+</html>

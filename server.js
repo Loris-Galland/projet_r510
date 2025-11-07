@@ -12,6 +12,7 @@ const moveRoutes = require('./routes/moves');
 const typeRoutes = require('./routes/types');
 const pokemonRoutes = require('./routes/pokemon')
 const newPokemonRoute = require('./routes/newPokemon');
+const newTypeRoutes = require('./routes/newType');
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/moves', moveRoutes);
 app.use('/types', typeRoutes);
 app.use('/pokemon', pokemonRoutes)
 app.use('/new-pokemon', newPokemonRoute);
+app.use('/new-type', newTypeRoutes);
 
 // Files static
 app.use(express.static(path.join(__dirname, 'public')));
