@@ -57,6 +57,21 @@ body {
   line-height: 1.5;
 }
 
+#item-detail ul {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+#item-detail li {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.6;
+  border-bottom: 1px solid #eee;
+  padding: 5px 0;
+}
+
 /* Bouton Retour */
 #item-detail a {
   display: inline-block;

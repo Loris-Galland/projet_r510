@@ -8,44 +8,13 @@
 <body>
   <div id="item-detail"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
-
-    fetch(`/item/${id}`)
-      .then(res => res.json()) // transformer la réponse en JSON
-      .then(item => {
-        const conteneur = document.getElementById('item-detail');
-        let contenu = '<h1>Détail de l\'item</h1>';
-        contenu += '<ul>';
-
-        //parcours des clés de l'objet item
-        const cles = Object.keys(item);
-
-        for (let i = 0; i < cles.length; i++) { // boucle sur les clés
-          const cle = cles[i]; // clé courante
-          const valeur = item[cle]; // valeur associée à la clé
-          let texteValeur; // variable pour stocker le texte à afficher
-
-          // si la valeur est un objet ou un tableau, si on ne fait pas ça, on obtient [object Object]
-          if (typeof valeur==='object' && valeur!== null) { 
-            texteValeur = '<pre>' + JSON.stringify(valeur, null,2) + '</pre>';  //formatage 
-          } else {
-            // sinon juste print la valeur
-            texteValeur = valeur;
-          }
-
-          contenu += '<li><strong>' + cle + '</strong> : ' + texteValeur + '</li>'; // ajoute à la liste
-        }
-
-        contenu += '</ul>';
-
-        // lien retour
-        contenu += '<a href="/items.html" style="display:inline-block;margin-top:20px;">← Retour aux items</a>'; 
-        conteneur.innerHTML = contenu;
-      })
-      .catch(err => console.error('Erreur chargement item :', err));
-  </script>
+  <div id="actions">
+    <button id="deleteBtn">Supprimer</button>
+    <button id="updateBtn">Modifier</button>
+  </div>
+  <div id="updateForm" style="display:none; margin-top:10px;"> 
+    <h3>Modifier item</h3>
+  </div>
+  <script src="/js/item.js"></script>
 </body>
 </html>
