@@ -79,27 +79,50 @@ fetch(`/item/${id}`)
       }
     });
 
-    // sauvegarde de l'item
-        document.getElementById('saveBtn').addEventListener('click', () => {
+   // Bouton de la sauvegarde des modifications
+        saveBtn.addEventListener('click', () => {
+      // reconstruction de l'objet updatedItem à partir des inputs
       const updatedItem = {};
 
-      updateForm.querySelectorAll('input, textarea').forEach(input => {
-        const key = input.id.replace('update_', ''); // clé du champ
-        const keys = key.split('.'); // gérer les clés imbriquées "name.english"
+      // parcours de tous les inputs / textarea créés
+      updateForm.querySelectorAll('input[id^="update_"], textarea[id^="update_"]').forEach(input => {
+        const key = input.id.replace('update_', ''); // ex: name.english
+        const keys = key.split('.');
         let obj = updatedItem;
 
+
+        // GENERE PAR IA
+
+        // créé les objets intermédiaires
         for (let i = 0; i < keys.length - 1; i++) {
           if (!obj[keys[i]]) obj[keys[i]] = {};
           obj = obj[keys[i]];
         }
 
-        // On essaye de parser JSON pour les objets ou arrays, sinon on garde la string
-        try {
-          obj[keys[keys.length - 1]] = JSON.parse(input.value);
-        } catch {
-          obj[keys[keys.length - 1]] = input.value;
+        const finalKey = keys[keys.length - 1];
+
+        // si le champ était marqué comme 'json' => obliger à JSON.parse
+        if (input.dataset.type === 'json') {
+          try {
+            obj[finalKey] = JSON.parse(input.value);
+          } catch (e) {
+            alert(`Le champ "${key}" contient du JSON invalide : ${e.message}`);
+            throw new Error(`JSON invalide dans ${key}`); // stoppe la boucle et empêche fetch
+          }
+        } else {
+          // on essaye JSON.parse pour capturer true/false/nombres si l'utilisateur a laissé "123" ou "true"
+          try {
+            const parsed = JSON.parse(input.value);
+            // parsed peut être string si l'utilisateur a mis "foo" (non JSON) -> JSON.parse échouera
+            obj[finalKey] = parsed;
+          } catch {
+            // si parse échoue, on garde en string (préserve le comportement si c'est littéral)
+            obj[finalKey] = input.value;
+          }
         }
       });
+      // Sécurité : ne jamais envoyer de _id au serveur 
+      if (updatedItem._id) delete updatedItem._id;
 
 
       fetch(`/item/${id}`, { // envoie la requête put
@@ -109,7 +132,7 @@ fetch(`/item/${id}`)
       })
       .then(res => res.json())
       .then(data => {
-        alert(data.message);
+        alert(data.message); // alerte message de succès (ou erreur)
         window.location.reload();
       })
       .catch(err => console.error('erreur mise à jour:', err));

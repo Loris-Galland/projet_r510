@@ -32,7 +32,7 @@ router.put('/:id', async (req, res) => {
     const collection = db.collection('items');
     const id = new ObjectId(req.params.id); // id de l'item à mettre à jour
     const updateData = req.body;  // données à mettre à jour
-    const result = await collection.updateOne({ _id: id }, { $set: updateData }); // met à jour les champs spécifiés dans updateData
+    const result = await collection.updateOne({ _id: id }, { $set: updateData }); // met à jour les champs spécifiés dans updateData set
 
     if (result.modifiedCount===0) {
       return res.status(404).json({ message: 'aucun item mis à jour' });
