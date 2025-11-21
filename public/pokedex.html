@@ -10,7 +10,6 @@
   <a href="index.html">Accueil</a></li>
   <a href="new-pokemon.html">Créer un Pokémon</a>
   <input type="text" id="nameSearch" placeholder="Rechercher par nom">
-  <input type="text" id="typeFilter" placeholder="Filtrer par type">
   <button id="loadBtn">Charger</button>
   <select id="langSelect">
   <option value="fr">Français</option>
@@ -18,6 +17,31 @@
   <option value="jp">日本語</option>
   <option value="cn">中文</option>
 </select>
+  <div id="typeCheckboxContainer"></div>
+<div id="filters">
+
+  <input type="number" id="attackMin" placeholder="Attack min">
+  <input type="number" id="attackMax" placeholder="Attack max">
+  <input type="number" id="hpMin" placeholder="HP min">
+  <input type="number" id="hpMax" placeholder="HP max">
+  <input type="number" id="weightMin" placeholder="Poids min (kg)">
+  <input type="number" id="weightMax" placeholder="Poids max (kg)">
+  <input type="number" id="heightMin" placeholder="Taille min (m)">
+  <input type="number" id="heightMax" placeholder="Taille max (m)">
+  <input type="number" id="evoLevel" placeholder="Niveau d'évolution (ex : 30)">
+
+
+  <select id="evolutionCount">
+    <option value="">Évolution(s) ?</option>
+    <option value="0">Aucune évolution</option>
+    <option value="1">Une évolution</option>
+    <option value="2">Deux évolutions</option>
+  </select>
+
+  <button id="filterBtn">Filtrer</button>
+</div>
+
+
   <div id="pokemon-container"></div>
   
 

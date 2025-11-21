@@ -15,16 +15,18 @@ selectLang.addEventListener("change", (e) => {
   chargerPokemons();
 });
 
-async function chargerPokemons() {
-  const filtreType = document.getElementById('typeFilter').value; //recup type saisi EN ANGLAIS
+// Fonction principale d'affichage des Pokémons
+// Peut prendre une URL personnalisée (utile pour filtrage multi-critères)
+async function chargerPokemons(customURL = null) {
   const nomRecherche = document.getElementById('nameSearch').value.trim(); // recup nom saisi
 
-  // Construction dynamique de l'URL selon le filtre type et la recherche par nom
-  let url = `${BASE_URL}`;
+  // Construction dynamique de l'URL selon la recherche par nom
+  let url = customURL ? customURL : `${BASE_URL}`;
   const params = [];
-  if (filtreType) params.push(`type=${filtreType}`);
-  if (nomRecherche) params.push(`name=${nomRecherche}`);
-  if (params.length > 0) url += `?${params.join('&')}`;
+  if (!customURL) { // si pas d'URL custom, on utilise les filtres classiques
+    if (nomRecherche) params.push(`name=${nomRecherche}`);
+    if (params.length > 0) url += `?${params.join('&')}`;
+  }
 
   try {
     const reponse = await fetch(url);
@@ -34,17 +36,18 @@ async function chargerPokemons() {
 
     listePokemons.forEach(pokemon => {
       const carte = document.createElement('div');
-      carte.className='pokemon-card';
+      carte.className = 'pokemon-card';
 
       // affichage selon langue sélectionnée
-      carte.innerHTML=
-        `<h3>${pokemon.name[currentLang]}</h3>
+      carte.innerHTML = `
+        <h3>${pokemon.name[currentLang]}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
-        <p>Type: ${pokemon.type.join(', ')}</p>`;
+        <p>Type: ${pokemon.type.join(', ')}</p>
+      `;
 
       // Clique sur une carte et redirige vers la page détail du Pokémon
       carte.addEventListener('click', () => {
-          window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
+        window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
       });
 
       conteneur.appendChild(carte);
@@ -55,27 +58,79 @@ async function chargerPokemons() {
   }
 }
 
-document.getElementById('loadBtn').addEventListener('click', chargerPokemons);
-chargerPokemons(); // à l'"ouverture
+// Charger dynamiquement la liste des types (pour filtre multi-type checkbox)
+async function chargerTypesFilter() {
+  const res = await fetch("http://localhost:3000/types");
+  const types = await res.json();
+  const container = document.getElementById("typeCheckboxContainer");
+
+  types.forEach(t => {
+    const div = document.createElement("div");
+    div.className = "type-option";
+
+    div.innerHTML = `
+      <label>
+        <input type="checkbox" name="typeFilter" value="${t.english}">
+        ${t.english}
+      </label>
+    `;
+    container.appendChild(div);
+  });
+}
+
+chargerTypesFilter(); // charge les types au chargement
+
+// Bouton filtrage multi-critères
+document.getElementById("filterBtn").addEventListener("click", () => {
+  const checkedTypes = Array.from(document.querySelectorAll("input[name='typeFilter']:checked"))
+    .map(c => c.value);
+
+  const attackMin = document.getElementById("attackMin").value;
+  const attackMax = document.getElementById("attackMax").value;
+  const hpMin = document.getElementById("hpMin").value;
+  const hpMax = document.getElementById("hpMax").value;
+  const evolutionCount = document.getElementById("evolutionCount").value;
+  const weightMin = document.getElementById("weightMin").value;
+  const weightMax = document.getElementById("weightMax").value;
+  const heightMin = document.getElementById("heightMin").value;
+  const heightMax = document.getElementById("heightMax").value;
+  const evoLevel = document.getElementById("evoLevel").value;
+
+  let url = `${BASE_URL}/filter?`;
+
+  if (checkedTypes.length > 0) url += `types=${checkedTypes.join(',')}&`;
+  if (attackMin) url += `attackMin=${attackMin}&`;
+  if (attackMax) url += `attackMax=${attackMax}&`;
+  if (hpMin) url += `hpMin=${hpMin}&`;
+  if (hpMax) url += `hpMax=${hpMax}&`;
+  if (evolutionCount) url += `evo=${evolutionCount}&`;
+  if (weightMin) url += `weightMin=${weightMin}&`;
+  if (weightMax) url += `weightMax=${weightMax}&`;
+  if (heightMin) url += `heightMin=${heightMin}&`;
+  if (heightMax) url += `heightMax=${heightMax}&`;
+  if (evoLevel) url += `evoLevel=${evoLevel}&`;
+
+  chargerPokemons(url);
+});
+
+// afficher tous les pokemons au démarrage
+document.getElementById('loadBtn').addEventListener('click', () => chargerPokemons());
+chargerPokemons(); // à l'"ouverture"
 
 // Recherche par nom
 const inputRecherche = document.getElementById('nameSearch');
 inputRecherche.addEventListener('input', async () => {
   // trim permet de supprimer les espaces avant et après la saisie de l'utilisateur
-  const recherche = inputRecherche.value.trim(); 
-  const filtreType = document.getElementById('typeFilter').value; // garder le type sélectionné
+  const recherche = inputRecherche.value.trim();
 
-  // Si le champ est vide on recharge UNIQUEMENT avec le filtre type
+  // Si le champ est vide -> recharge normal
   if (recherche.length === 0) {
-    chargerPokemons(); // cette fonction gère déjà le type
+    chargerPokemons();
     return;
   }
 
-  // Construction de l'URL pour la recherche (on garde le type si présent)
-  let urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
-  if (filtreType) {
-    urlSearch += `&type=${filtreType}`;
-  }
+  // Construction de l'URL pour la recherche
+  const urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
 
   try {
     const reponse = await fetch(urlSearch);
@@ -94,11 +149,12 @@ inputRecherche.addEventListener('input', async () => {
       carte.innerHTML = `
         <h3>${pokemon.name[currentLang]}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
-        <p>Type: ${pokemon.type.join(', ')}</p>`;
+        <p>Type: ${pokemon.type.join(', ')}</p>
+      `;
 
       // Même redirection sur les résultats de recherche
       carte.addEventListener('click', () => {
-        window.location.href = `pokemon.html?id=${pokemon._id}`;
+        window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
       });
 
       conteneur.appendChild(carte);

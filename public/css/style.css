@@ -41,3 +41,16 @@
     text-align: center;
     width: 150px;
 }
+
+#typeCheckboxContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.type-option {
+  background: #eee;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
