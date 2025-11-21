@@ -79,8 +79,7 @@ fetch(`/item/${id}`)
       }
     });
 
-   // Bouton de la sauvegarde des modifications
-        saveBtn.addEventListener('click', () => {
+      saveBtn.addEventListener('click', () => {
       // reconstruction de l'objet updatedItem à partir des inputs
       const updatedItem = {};
 
