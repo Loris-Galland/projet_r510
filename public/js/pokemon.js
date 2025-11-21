@@ -1,6 +1,7 @@
 // Récupère l'ID du Pokémon depuis l'URL (ex: pokemon.html?id=xxxx)
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
+const lang = params.get('lang') || 'fr'; 
 
 const conteneur = document.getElementById('pokemon-detail');
 const deleteBtn = document.getElementById('deleteBtn');
@@ -11,7 +12,10 @@ async function chargerPokemon() {
     if (!res.ok) throw new Error('Pokémon introuvable');
     const pokemon = await res.json();
 
-    let contenu = `<h1>${pokemon.name.french}</h1>`;
+     // Utilise la langue choisie dans le Pokédex (french, english, japanese, chinese)
+    const nomAffiche = pokemon.name[lang] || pokemon.name.french; 
+
+    let contenu = `<h1>${nomAffiche}</h1>`;
     contenu += `<img src="${pokemon.image.sprite}" alt="${pokemon.name.french}" style="width:120px;">`;
     contenu += '<ul>';
 

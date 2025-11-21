@@ -12,7 +12,16 @@
   <input type="text" id="nameSearch" placeholder="Rechercher par nom">
   <input type="text" id="typeFilter" placeholder="Filtrer par type">
   <button id="loadBtn">Charger</button>
+  <select id="langSelect">
+  <option value="fr">Français</option>
+  <option value="en">English</option>
+  <option value="jp">日本語</option>
+  <option value="cn">中文</option>
+</select>
   <div id="pokemon-container"></div>
-  <script src="js/pokedex.js"></script>
+  
+
+<!-- type="module" permet d'utiliser import/export dans ce fichier JavaScript -->
+  <script type="module" src="js/pokedex.js"></script>
 </body>
 </html>
