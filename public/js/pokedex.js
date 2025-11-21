@@ -95,6 +95,14 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   const heightMin = document.getElementById("heightMin").value;
   const heightMax = document.getElementById("heightMax").value;
   const evoLevel = document.getElementById("evoLevel").value;
+  const spAtkMin = document.getElementById("spAtkMin").value;
+  const spAtkMax = document.getElementById("spAtkMax").value;
+  const spDefMin = document.getElementById("spDefMin").value;
+  const spDefMax = document.getElementById("spDefMax").value;
+  const speedMin = document.getElementById("speedMin").value;
+  const speedMax = document.getElementById("speedMax").value;
+  const gender = document.getElementById("genderSelect").value;
+
 
   let url = `${BASE_URL}/filter?`;
 
@@ -109,6 +117,13 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   if (heightMin) url += `heightMin=${heightMin}&`;
   if (heightMax) url += `heightMax=${heightMax}&`;
   if (evoLevel) url += `evoLevel=${evoLevel}&`;
+  if (spAtkMin) url += `spAtkMin=${spAtkMin}&`;
+  if (spAtkMax) url += `spAtkMax=${spAtkMax}&`;
+  if (spDefMin) url += `spDefMin=${spDefMin}&`;
+  if (spDefMax) url += `spDefMax=${spDefMax}&`;
+  if (speedMin) url += `speedMin=${speedMin}&`;
+  if (speedMax) url += `speedMax=${speedMax}&`;
+  if (gender) url += `gender=${gender}&`;
 
   chargerPokemons(url);
 });

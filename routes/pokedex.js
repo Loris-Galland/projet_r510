@@ -115,6 +115,33 @@ router.get("/filter", async (req, res) => {
       );
     }
 
+    // ⚡ NEW : Filtre Sp. Attack min/max
+    if (req.query.spAtkMin || req.query.spAtkMax) {
+      const min = parseInt(req.query.spAtkMin) || 0;
+      const max = parseInt(req.query.spAtkMax) || 9999;
+      pokemons = pokemons.filter(p =>
+        p.base?.["Sp. Attack"] >= min && p.base?.["Sp. Attack"] <= max
+      );
+    }
+
+    // ⚡ NEW : Filtre Sp. Defense min/max
+    if (req.query.spDefMin || req.query.spDefMax) {
+      const min = parseInt(req.query.spDefMin) || 0;
+      const max = parseInt(req.query.spDefMax) || 9999;
+      pokemons = pokemons.filter(p =>
+        p.base?.["Sp. Defense"] >= min && p.base?.["Sp. Defense"] <= max
+      );
+    }
+
+    // ⚡ NEW : Filtre Speed min/max
+    if (req.query.speedMin || req.query.speedMax) {
+      const min = parseInt(req.query.speedMin) || 0;
+      const max = parseInt(req.query.speedMax) || 9999;
+      pokemons = pokemons.filter(p =>
+        p.base?.Speed >= min && p.base?.Speed <= max
+      );
+    }
+
     // Filtre Weight min/max (ex: "13 kg" → 13)
     if (req.query.weightMin || req.query.weightMax) {
       const min = parseFloat(req.query.weightMin) || 0;
@@ -142,13 +169,27 @@ router.get("/filter", async (req, res) => {
       );
     }
 
+    // Filtre gender (male / female / both)
+    if (req.query.gender) {
+      pokemons = pokemons.filter(p => {
+        const genderStr = p.gender; 
+        if (!genderStr) return false;
+        const [male, female] = genderStr.split(":").map(Number);
+
+        if (req.query.gender === "male") return male > female;
+        if (req.query.gender === "female") return female > male;
+        if (req.query.gender === "both") return male === female;
+
+        return true;
+      });
+    }
+
     res.json(pokemons);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur serveur (filtre avancé)" });
   }
 });
-
 
 // permet à ce router d'être utilisé dans server.js
 module.exports = router;
