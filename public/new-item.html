@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer un nouveau Item</title>
+  <link rel="stylesheet" href="/css/new-pokemon.css">
+</head>
+<body>
+  <div id="form-container">
+    <h1>Ajouter un nouveau Item</h1>
+    <form id="newItemForm">
+      <label>Nom (Anglais) :</label>
+      <input type="text" id="nameEnglish">
+
+      <label>Type :</label>
+      <input type="text" id="type" placeholder="ex: Pokeballs" required>
+
+      <label>Description :</label>
+      <textarea id="description" rows="3"></textarea>
+
+
+      <button type="submit">Créer l'item</button>
+    </form>
+
+    <a href="/items.html">Retour aux items</a>
+  </div>
+
+  <script src="js/new-item.js"></script>
+</body>
+</html>

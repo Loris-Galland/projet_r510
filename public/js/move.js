@@ -2,22 +2,21 @@ const params = new URLSearchParams(window.location.search); // récupère les pa
 const id = params.get('id');
 const updateForm = document.getElementById('updateForm'); // formulaire de mise à jour
 
-fetch(`/pokemon/${id}`)
+fetch(`/move/${id}`)
   .then(res => res.json()) // transformer la réponse en JSON
-  .then(pokemon => {
-    const conteneur = document.getElementById('pokemon-detail');
+  .then(move => {
+    const conteneur = document.getElementById('move-detail');
 
-    // Affichage des détails de pokemon
-    let contenu = '<h1>Détail du pokémon</h1>';
-    contenu += `<img src="${pokemon.image.sprite}" alt="${pokemon.name.french}" style="width:120px;">`;
+    // Affichage des détails de move
+    let contenu = '<h1>Détail de l\'attaque</h1>';
     contenu += '<ul>';
 
-    // parcours des clés de l'objet pokemon
-    const cles = Object.keys(pokemon);
+    // parcours des clés de l'objet move
+    const cles = Object.keys(move);
 
     for (let i = 0; i < cles.length; i++) { // boucle sur les clés
       const cle = cles[i]; // clé courante
-      const valeur = pokemon[cle]; // valeur associée à la clé
+      const valeur = move[cle]; // valeur associée à la clé
       let texteValeur; // variable pour stocker le texte à afficher
 
       // si la valeur est un objet ou un tableau, on ne fait pas ça sinon on obtient [object Object]
@@ -31,14 +30,15 @@ fetch(`/pokemon/${id}`)
     }
 
     contenu += '</ul>';
-    contenu += '<a href="/pokedex.html" style="display:inline-block;margin-top:20px;">← Retour aux pokemons</a>';  
+
     // lien retour
+    contenu += '<a href="/moves.html" style="display:inline-block;margin-top:20px;">← Retour aux moves</a>';  
     conteneur.innerHTML = contenu;
 
     // création dynamique des champs du formulaire
     updateForm.innerHTML = '';
-    Object.keys(pokemon).forEach(cle => { 
-      const valeur = pokemon[cle];
+    Object.keys(move).forEach(cle => { 
+      const valeur = move[cle];
       let input; // champ de saisie
 
       if (typeof valeur === 'object' && valeur !== null) { // pour les objets et tableaux
@@ -80,14 +80,14 @@ fetch(`/pokemon/${id}`)
     });
 
       saveBtn.addEventListener('click', () => {
-      // reconstruction de l'objet updatedPokemon à partir des inputs
-      const updatedPokemon = {};
+      // reconstruction de l'objet updatedMove à partir des inputs
+      const updatedMove = {};
 
       // parcours de tous les inputs / textarea créés
       updateForm.querySelectorAll('input[id^="update_"], textarea[id^="update_"]').forEach(input => {
         const key = input.id.replace('update_', ''); // ex: name.english
         const keys = key.split('.');
-        let obj = updatedPokemon;
+        let obj = updatedMove;
 
 
         // GENERE PAR IA
@@ -121,13 +121,13 @@ fetch(`/pokemon/${id}`)
         }
       });
       // Sécurité : ne jamais envoyer de _id au serveur 
-      if (updatedPokemon._id) delete updatedPokemon._id;
+      if (updatedMove._id) delete updatedMove._id;
 
 
-      fetch(`/pokemon/${id}`, { // envoie la requête put
+      fetch(`/move/${id}`, { // envoie la requête put
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedPokemon) // corps de la requête
+        body: JSON.stringify(updatedMove) // corps de la requête
       })
       .then(res => res.json())
       .then(data => {
@@ -140,15 +140,15 @@ fetch(`/pokemon/${id}`)
     // suppression de l'attaque
     document.getElementById('deleteBtn').addEventListener('click', () => {
       if (confirm('sûr de supprimer cette attaque ?')) {
-        fetch(`/pokemon/${id}`, { method: 'DELETE' })
+        fetch(`/move/${id}`, { method: 'DELETE' })
           .then(res => res.json())
           .then(data => {
             alert(data.message);
-            window.location.href = '/pokedex.html';
+            window.location.href = '/moves.html';
           })
-          .catch(err => console.error('erreur suppression pokemon :', err));
+          .catch(err => console.error('erreur suppression move :', err));
       }
     });
 
   })
-  .catch(err => console.error('erreur chargement pokemon :', err));
+  .catch(err => console.error('erreur chargement move :', err));

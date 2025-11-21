@@ -16,7 +16,12 @@ async function chargerMoves() {
       carte.innerHTML=
         `<h3>${move.ename}</h3>
         <p>Type: ${move.type}</p>`;
-      conteneur.appendChild(carte);
+      ;
+
+    carte.addEventListener('click', () => {
+    window.location.href = `move.html?id=${move._id}`;
+    });
+    conteneur.appendChild(carte);
     });
 
   } catch (erreur) {

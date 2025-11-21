@@ -15,12 +15,15 @@ async function chargerTypes() {
         `<h3>${type.english}</h3>
         <p>Effective: ${type.effective.join(', ')}</p>
         <p>Ineffective: ${type.ineffective.join(', ')}</p>
-        <p>No Effect: ${type.no_effect.join(', ')}</p>`
-
-
-      conteneur.appendChild(carte);
+        <p>No Effect: ${type.no_effect.join(', ')}</p>`;
+    
+        carte.addEventListener('click', () => {
+    window.location.href = `type.html?id=${type._id}`;
+    });
+    conteneur.appendChild(carte);
     });
 
+    
   } catch (erreur) {
     console.error('erreurlaod types :', erreur);
   }

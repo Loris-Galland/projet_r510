@@ -1,0 +1,116 @@
+/* Conteneur principal */
+#move-detail {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Titres */
+#move-detail h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Liste des détails */
+#move-detail ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#move-detail li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+#move-detail li strong {
+  color: #555;
+}
+
+/* Lien retour */
+#move-detail a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+}
+
+#move-detail a:hover {
+  text-decoration: underline;
+}
+
+/* Formulaire de mise à jour */
+#updateForm {
+  max-width: 700px;
+  margin: 20px auto 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none; /* caché par défaut */
+}
+
+#updateForm label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+#updateForm input,
+#updateForm textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+#updateForm textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Boutons */
+button {
+  padding: 10px 20px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+#updateBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+#updateBtn:hover {
+  background-color: #218838;
+}
+
+#saveBtn {
+  background-color: #007bff;
+  color: white;
+}
+
+#saveBtn:hover {
+  background-color: #0056b3;
+}
+
+#deleteBtn {
+  background-color: #dc3545;
+  color: white;
+  margin-left: 10px;
+}
+
+#deleteBtn:hover {
+  background-color: #c82333;
+}
