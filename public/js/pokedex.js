@@ -102,6 +102,8 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   const speedMin = document.getElementById("speedMin").value;
   const speedMax = document.getElementById("speedMax").value;
   const gender = document.getElementById("genderSelect").value;
+  const sortBy = document.getElementById("sortBy").value;
+  const sortOrder = document.getElementById("sortOrder").value;
 
 
   let url = `${BASE_URL}/filter?`;
@@ -124,6 +126,9 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   if (speedMin) url += `speedMin=${speedMin}&`;
   if (speedMax) url += `speedMax=${speedMax}&`;
   if (gender) url += `gender=${gender}&`;
+  if (sortBy) url += `sortBy=${sortBy}&`;
+  if (sortOrder) url += `sortOrder=${sortOrder}&`;
+
 
   chargerPokemons(url);
 });

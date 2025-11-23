@@ -92,8 +92,8 @@ router.get("/filter", async (req, res) => {
     // Multi-types (ex: Fire,Flying)
     if (req.query.types) {
       const typesArr = req.query.types.split(",");
-      pokemons = pokemons.filter(p =>
-        typesArr.every(t => p.type.includes(t))
+      pokemons = pokemons.filter((p) =>
+        typesArr.every((t) => p.type.includes(t))
       );
     }
 
@@ -101,8 +101,8 @@ router.get("/filter", async (req, res) => {
     if (req.query.attackMin || req.query.attackMax) {
       const min = parseInt(req.query.attackMin) || 0;
       const max = parseInt(req.query.attackMax) || 9999;
-      pokemons = pokemons.filter(p =>
-        p.base?.Attack >= min && p.base?.Attack <= max
+      pokemons = pokemons.filter(
+        (p) => p.base?.Attack >= min && p.base?.Attack <= max
       );
     }
 
@@ -110,35 +110,33 @@ router.get("/filter", async (req, res) => {
     if (req.query.hpMin || req.query.hpMax) {
       const min = parseInt(req.query.hpMin) || 0;
       const max = parseInt(req.query.hpMax) || 9999;
-      pokemons = pokemons.filter(p =>
-        p.base?.HP >= min && p.base?.HP <= max
-      );
+      pokemons = pokemons.filter((p) => p.base?.HP >= min && p.base?.HP <= max);
     }
 
-    // ⚡ NEW : Filtre Sp. Attack min/max
+    // Filtre Sp. Attack min/max
     if (req.query.spAtkMin || req.query.spAtkMax) {
       const min = parseInt(req.query.spAtkMin) || 0;
       const max = parseInt(req.query.spAtkMax) || 9999;
-      pokemons = pokemons.filter(p =>
-        p.base?.["Sp. Attack"] >= min && p.base?.["Sp. Attack"] <= max
+      pokemons = pokemons.filter(
+        (p) => p.base?.["Sp. Attack"] >= min && p.base?.["Sp. Attack"] <= max
       );
     }
 
-    // ⚡ NEW : Filtre Sp. Defense min/max
+    // Filtre Sp. Defense min/max
     if (req.query.spDefMin || req.query.spDefMax) {
       const min = parseInt(req.query.spDefMin) || 0;
       const max = parseInt(req.query.spDefMax) || 9999;
-      pokemons = pokemons.filter(p =>
-        p.base?.["Sp. Defense"] >= min && p.base?.["Sp. Defense"] <= max
+      pokemons = pokemons.filter(
+        (p) => p.base?.["Sp. Defense"] >= min && p.base?.["Sp. Defense"] <= max
       );
     }
 
-    // ⚡ NEW : Filtre Speed min/max
+    // Filtre Speed min/max
     if (req.query.speedMin || req.query.speedMax) {
       const min = parseInt(req.query.speedMin) || 0;
       const max = parseInt(req.query.speedMax) || 9999;
-      pokemons = pokemons.filter(p =>
-        p.base?.Speed >= min && p.base?.Speed <= max
+      pokemons = pokemons.filter(
+        (p) => p.base?.Speed >= min && p.base?.Speed <= max
       );
     }
 
@@ -146,7 +144,7 @@ router.get("/filter", async (req, res) => {
     if (req.query.weightMin || req.query.weightMax) {
       const min = parseFloat(req.query.weightMin) || 0;
       const max = parseFloat(req.query.weightMax) || 9999;
-      pokemons = pokemons.filter(p => {
+      pokemons = pokemons.filter((p) => {
         const weight = parseFloat(p.profile?.weight); // conversion string
         return weight >= min && weight <= max;
       });
@@ -156,7 +154,7 @@ router.get("/filter", async (req, res) => {
     if (req.query.heightMin || req.query.heightMax) {
       const min = parseFloat(req.query.heightMin) || 0;
       const max = parseFloat(req.query.heightMax) || 9999;
-      pokemons = pokemons.filter(p => {
+      pokemons = pokemons.filter((p) => {
         const height = parseFloat(p.profile?.height);
         return height >= min && height <= max;
       });
@@ -164,15 +162,17 @@ router.get("/filter", async (req, res) => {
 
     // Filtre niveau d'évolution
     if (req.query.evoLevel) {
-      pokemons = pokemons.filter(p =>
-        p.evolution?.next?.some(e => e.includes(`Level ${req.query.evoLevel}`))
+      pokemons = pokemons.filter((p) =>
+        p.evolution?.next?.some((e) =>
+          e.includes(`Level ${req.query.evoLevel}`)
+        )
       );
     }
 
     // Filtre gender (male / female / both)
     if (req.query.gender) {
-      pokemons = pokemons.filter(p => {
-        const genderStr = p.gender; 
+      pokemons = pokemons.filter((p) => {
+        const genderStr = p.gender;
         if (!genderStr) return false;
         const [male, female] = genderStr.split(":").map(Number);
 
@@ -183,6 +183,37 @@ router.get("/filter", async (req, res) => {
         return true;
       });
     }
+
+        // Tri avec sort
+    if (req.query.sortBy) {
+      const key = req.query.sortBy; // ex: HP, Attack, Defense, Speed, weight, height
+      const order = req.query.sortOrder === "asc" ? 1 : -1;
+
+      pokemons.sort((a, b) => {
+        let valA = 0, valB = 0;
+
+        // Stats classiques
+        if (a.base && b.base && a.base[key] !== undefined && b.base[key] !== undefined) {
+          valA = a.base[key];
+          valB = b.base[key];
+        }
+
+        // Tri Poids
+        else if (key === "weight") {
+          valA = parseFloat(a.profile?.weight) || 0;
+          valB = parseFloat(b.profile?.weight) || 0;
+        }
+
+        // Tri Taille
+        else if (key === "height") {
+          valA = parseFloat(a.profile?.height) || 0;
+          valB = parseFloat(b.profile?.height) || 0;
+        }
+
+        return (valA - valB) * order;
+      });
+    }
+
 
     res.json(pokemons);
   } catch (err) {
