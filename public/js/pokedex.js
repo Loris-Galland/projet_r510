@@ -167,10 +167,11 @@ inputRecherche.addEventListener('input', async () => {
       const carte = document.createElement('div');
       carte.className = 'pokemon-card';
       carte.innerHTML = `
-        <h3>${pokemon.name[currentLang]}</h3>
-        <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
-        <p>Type: ${pokemon.type.join(', ')}</p>
-      `;
+      <h3>${pokemon.name[currentLang] || pokemon.name.french}</h3>
+      <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang] || pokemon.name.french}">
+      <p>Type: ${pokemon.type.join(', ')}</p>
+    `;
+
 
       // Même redirection sur les résultats de recherche
       carte.addEventListener('click', () => {
