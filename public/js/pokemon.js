@@ -1,22 +1,14 @@
 const params = new URLSearchParams(window.location.search); // récupère les param de l'URL
 const id = params.get('id');
-const lang = params.get('lang') || 'fr'; 
+const updateForm = document.getElementById('updateForm'); // formulaire de mise à jour
 
 fetch(`/pokemon/${id}`)
   .then(res => res.json()) // transformer la réponse en JSON
   .then(pokemon => {
     const conteneur = document.getElementById('pokemon-detail');
 
-async function chargerPokemon() {
-  try {
-    const res = await fetch(`/pokemon/${id}`);
-    if (!res.ok) throw new Error('Pokémon introuvable');
-    const pokemon = await res.json();
-
-     // Utilise la langue choisie dans le Pokédex (french, english, japanese, chinese)
-    const nomAffiche = pokemon.name[lang] || pokemon.name.french; 
-
-    let contenu = `<h1>${nomAffiche}</h1>`;
+    // Affichage des détails de pokemon
+    let contenu = '<h1>Détail du pokémon</h1>';
     contenu += `<img src="${pokemon.image.sprite}" alt="${pokemon.name.french}" style="width:120px;">`;
     contenu += '<ul>';
 
