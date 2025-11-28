@@ -23,7 +23,8 @@ router.get('/', async (req, res) => {
     if (nameQuery) {
       query['name.english'] = { $regex: `^${nameQuery}`, $options: 'i' };
     }
-
+    // Si une description est demandée, on filtre aussi par description
+    // en séparant les mots-clés par des espaces
     if (descQuery) {
       const mots = descQuery.trim().split(/\s+/); // sépare par espaces
       query.$and = mots.map(mot => ({

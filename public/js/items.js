@@ -100,3 +100,24 @@ inputRecherche.addEventListener('input', async () => {
     console.error('Erreur recherche item :', erreur);
   }
 });
+
+async function chargerTypes() {
+  try {
+    const reponse = await fetch("http://localhost:3000/items");
+    const items = await reponse.json();
+    const select = document.getElementById('typeFilter');
+    const typesUniques = [];
+    items.forEach(item => {
+      if (!typesUniques.includes(item.type)) { // si le type n’est pas déjà dans le tableau
+        typesUniques.push(item.type);          // on l’ajoute
+        const option = document.createElement('option');
+        option.value = item.type;
+        option.textContent = item.type;
+        select.appendChild(option);
+      }
+    });
+  }catch (err) {
+    console.error('Erreur chargement items :', err);
+  }
+}
+chargerTypes();
