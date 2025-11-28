@@ -45,4 +45,30 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// PUT /pokemon/:id
+// Met à jour un Pokémon
+router.put('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const collection = db.collection('pokedex');
+    const { id } = req.params;
+    const updated = req.body;
+
+    // Empêche la modification de l'_id si présent dans le corps de la requête 
+    delete updated._id;
+
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updated }
+    );
+    if (result.matchedCount===0) {
+      return res.status(404).json({ message: "Pokémon non trouvé" });
+    }
+    res.json({ message:"Pokémon mis à jour avec succès" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur PUT Pokémon" });
+  }
+});
+
 module.exports = router;
