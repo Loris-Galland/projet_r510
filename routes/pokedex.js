@@ -175,12 +175,13 @@ router.get("/filter", async (req, res) => {
     }
 
     // Filtre niveau d'évolution
-    if (req.query.evoLevel) {
-      pokemons = pokemons.filter((p) =>
-        p.evolution?.next?.some((e) =>
-          e.includes(`Level ${req.query.evoLevel}`)
-        )
-      );
+    if (req.query.evo) {
+      const evoCount = parseInt(req.query.evo);
+
+      pokemons = pokemons.filter((p) => {
+        const count = p.evolution?.next?.length || 0;
+        return count === evoCount;
+      });
     }
 
     // Filtre gender (male / female / both)

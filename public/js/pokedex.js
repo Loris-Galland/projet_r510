@@ -131,6 +131,28 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   chargerPokemons(url);
 });
 
+// Bouton Reset Filters
+document.getElementById("resetFilters").addEventListener("click", () => {
+  // Reset types cochés
+  document
+    .querySelectorAll("input[name='typeFilter']:checked")
+    .forEach((c) => (c.checked = false));
+
+  // Reset tous les inputs numériques
+  document
+    .querySelectorAll("input[type='number']")
+    .forEach((i) => (i.value = ""));
+
+  // Reset tous les selects
+  document.querySelectorAll("#filters select").forEach((s) => (s.value = ""));
+
+  // Reset champ recherche
+  document.getElementById("nameSearch").value = "";
+
+  // Recharge tout le pokédex complet
+  chargerPokemons();
+});
+
 // afficher tous les pokemons au démarrage
 document
   .getElementById("loadBtn")
@@ -148,30 +170,6 @@ inputRecherche.addEventListener("input", async () => {
     document.getElementById("filterBtn").click();
     return;
   }
-
-  // Bouton Reset Filters
-  document.getElementById("resetFilters").addEventListener("click", () => {
-    // Reset types cochés
-    document
-      .querySelectorAll("input[name='typeFilter']:checked")
-      .forEach((c) => (c.checked = false));
-
-    // Reset tous les inputs numériques
-    document
-      .querySelectorAll("input[type='number']")
-      .forEach((i) => (i.value = ""));
-
-    // Reset selects
-    document.getElementById("genderSelect").value = "";
-    document.getElementById("sortBy").value = "";
-    document.getElementById("sortOrder").value = "";
-
-    // Reset champ recherche
-    document.getElementById("nameSearch").value = "";
-
-    // Recharge tout le pokédex complet
-    chargerPokemons();
-  });
 
   // Construction de l'URL pour la recherche + filtres actuels
   let urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
