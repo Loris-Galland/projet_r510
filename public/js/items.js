@@ -24,7 +24,7 @@ async function chargerItems() {
       const carte = document.createElement('div');
       carte.className = 'item-card';
       carte.innerHTML = `
-        <h3>${item.name.english}</h3>
+        <h3>${item.name.english || item.name}</h3>
         <p>Description : ${item.description}</p>
         <p>Type : ${item.type}</p>
       `;
