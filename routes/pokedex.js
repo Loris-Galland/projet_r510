@@ -31,6 +31,14 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Dictionnaire de correspondance
+const LANG_MAP = {
+  fr: "french",
+  en: "english",
+  jp: "japanese",
+  cn: "chinese"
+};
+
 // GET /pokedex/search
 // rechercher les Pokémon dont le nom commence par certaines lettres
 // (et optionnellement filtrer par type en même temps)
@@ -40,6 +48,9 @@ router.get('/search', async (req, res) => {
     const collection = db.collection('pokedex');
     const nameQuery = req.query.name || '';
     const typeQuery = req.query.type || ''; // on lit aussi le type s’il est présent dans l’URL
+    const langQuery = req.query.lang || 'fr';
+
+    const lang = LANG_MAP[langQuery] || "french";
 
     if (nameQuery.trim() === '') {
       return res.json([]);
@@ -47,7 +58,7 @@ router.get('/search', async (req, res) => {
 
     // Construction dynamique du filtre combiné
     const query = {
-      'name.french': { $regex: `^${nameQuery}`, $options: 'i' }
+      [`name.${lang}`]: { $regex: `^${nameQuery}`, $options: 'i' }
     };
 
     // Si un type est aussi présent, on le combine dans la recherche

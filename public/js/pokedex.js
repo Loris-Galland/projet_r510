@@ -1,5 +1,19 @@
+// Import internationalisation
+import { currentLang, setLanguage, initLanguage } from "./i18n.js";
+
 // URL de base pour l'API
 const BASE_URL = 'http://localhost:3000/pokedex';
+
+// Initialisation langue choisie précédemment
+initLanguage();
+
+// Sélection initiale dans le select (affichage correct)
+const selectLang = document.getElementById("langSelect");
+selectLang.value = localStorage.getItem("lang") || "fr";
+selectLang.addEventListener("change", (e) => {
+  setLanguage(e.target.value); // changement langue
+  chargerPokemons();
+});
 
 async function chargerPokemons() {
   const filtreType = document.getElementById('typeFilter').value; //recup type saisi EN ANGLAIS
@@ -20,23 +34,24 @@ async function chargerPokemons() {
 
     listePokemons.forEach(pokemon => {
       const carte = document.createElement('div');
-      carte.className = 'pokemon-card';
+      carte.className='pokemon-card';
 
-      carte.innerHTML =
-        `<h3>${pokemon.name.french}</h3>
-        <img src="${pokemon.image.sprite}" alt="${pokemon.name.french}">
+      // affichage selon langue sélectionnée
+      carte.innerHTML=
+        `<h3>${pokemon.name[currentLang]}</h3>
+        <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
         <p>Type: ${pokemon.type.join(', ')}</p>`;
 
       // Clique sur une carte et redirige vers la page détail du Pokémon
       carte.addEventListener('click', () => {
-        window.location.href = `pokemon.html?id=${pokemon._id}`;
+          window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
       });
 
       conteneur.appendChild(carte);
     });
 
   } catch (erreur) {
-    console.error('erreurlaod pokemon :', erreur);
+    console.error('erreur load pokemon :', erreur);
   }
 }
 
@@ -57,7 +72,7 @@ inputRecherche.addEventListener('input', async () => {
   }
 
   // Construction de l'URL pour la recherche (on garde le type si présent)
-  let urlSearch = `${BASE_URL}/search?name=${recherche}`;
+  let urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
   if (filtreType) {
     urlSearch += `&type=${filtreType}`;
   }
@@ -77,8 +92,8 @@ inputRecherche.addEventListener('input', async () => {
       const carte = document.createElement('div');
       carte.className = 'pokemon-card';
       carte.innerHTML = `
-        <h3>${pokemon.name.french}</h3>
-        <img src="${pokemon.image.sprite}" alt="${pokemon.name.french}">
+        <h3>${pokemon.name[currentLang]}</h3>
+        <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
         <p>Type: ${pokemon.type.join(', ')}</p>`;
 
       // Même redirection sur les résultats de recherche
