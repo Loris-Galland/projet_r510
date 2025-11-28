@@ -57,16 +57,17 @@ router.get("/search", async (req, res) => {
     let pokemons = await collection.find({}).toArray();
 
     // filtre nom sur FR + EN
-    pokemons = pokemons.filter(p =>
-      p.name.french.toLowerCase().includes(name) ||
-      p.name.english.toLowerCase().includes(name)
+    pokemons = pokemons.filter(
+      (p) =>
+        p.name.french.toLowerCase().includes(name) ||
+        p.name.english.toLowerCase().includes(name)
     );
 
     // reprise filtres existants (...)
     if (req.query.types) {
       const typesArr = req.query.types.split(",");
-      pokemons = pokemons.filter(p =>
-        typesArr.every(t => p.type.includes(t))
+      pokemons = pokemons.filter((p) =>
+        typesArr.every((t) => p.type.includes(t))
       );
     }
 
@@ -75,22 +76,22 @@ router.get("/search", async (req, res) => {
       const order = req.query.sortOrder === "asc" ? 1 : -1;
 
       pokemons.sort((a, b) => {
-        let valA = 0, valB = 0;
+        let valA = 0,
+          valB = 0;
         if (a.base && a.base[key] !== undefined) {
-          valA = a.base[key]; valB = b.base[key];
+          valA = a.base[key];
+          valB = b.base[key];
         }
         return (valA - valB) * order;
       });
     }
 
     res.json(pokemons);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur serveur (search + filtres)" });
   }
 });
-
 
 // GET /pokedex/filter
 // Filtrage avancé multi-critères (version simple avec parsing JS)
@@ -185,8 +186,9 @@ router.get("/filter", async (req, res) => {
     // Filtre gender (male / female / both)
     if (req.query.gender) {
       pokemons = pokemons.filter((p) => {
-        const genderStr = p.gender;
+        const genderStr = p.profile?.gender; // <-- Correct
         if (!genderStr) return false;
+
         const [male, female] = genderStr.split(":").map(Number);
 
         if (req.query.gender === "male") return male > female;
@@ -197,16 +199,22 @@ router.get("/filter", async (req, res) => {
       });
     }
 
-        // Tri avec sort
+    // Tri avec sort
     if (req.query.sortBy) {
       const key = req.query.sortBy; // ex: HP, Attack, Defense, Speed, weight, height
       const order = req.query.sortOrder === "asc" ? 1 : -1;
 
       pokemons.sort((a, b) => {
-        let valA = 0, valB = 0;
+        let valA = 0,
+          valB = 0;
 
         // Stats classiques
-        if (a.base && b.base && a.base[key] !== undefined && b.base[key] !== undefined) {
+        if (
+          a.base &&
+          b.base &&
+          a.base[key] !== undefined &&
+          b.base[key] !== undefined
+        ) {
           valA = a.base[key];
           valB = b.base[key];
         }
@@ -226,7 +234,6 @@ router.get("/filter", async (req, res) => {
         return (valA - valB) * order;
       });
     }
-
 
     res.json(pokemons);
   } catch (err) {
