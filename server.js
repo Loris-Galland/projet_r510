@@ -15,6 +15,7 @@ const itemRoute = require('./routes/item');
 const moveRoutes = require('./routes/move');
 const pokemonRoutes = require('./routes/pokemon')
 const newPokemonRoute = require('./routes/newPokemon');
+const fusionRoutes = require('./routes/fusion.js');
 const compareRoutes = require('./routes/compare');
 const newItemRoute = require('./routes/newItem');
 const newMoveRoute = require('./routes/newMove');
@@ -35,6 +36,7 @@ app.use('/item', itemRoute);
 app.use('/pokemon', pokemonRoutes);
 app.use('/move', moveRoutes);
 app.use('/new-pokemon', newPokemonRoute);
+app.use('/fusion', fusionRoutes);
 app.use('/compare', compareRoutes);
 app.use('/new-item', newItemRoute);
 app.use('/new-move', newMoveRoute);
