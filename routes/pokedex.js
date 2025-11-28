@@ -42,42 +42,55 @@ const LANG_MAP = {
 };
 
 // GET /pokedex/search
-// rechercher les Pokémon dont le nom commence par certaines lettres
-// (et optionnellement filtrer par type en même temps)
+// Recherche par nom + prise en compte tri & filtres
 router.get("/search", async (req, res) => {
   try {
     const db = getDb();
     const collection = db.collection("pokedex");
-    const nameQuery = req.query.name || "";
-    const typeQuery = req.query.type || ""; // on lit aussi le type s’il est présent dans l’URL
-    const langQuery = req.query.lang || "fr";
+    const name = (req.query.name || "").toLowerCase();
 
-    const lang = LANG_MAP[langQuery] || "french";
-
-    if (nameQuery.trim() === "") {
+    if (name.trim() === "") {
       return res.json([]);
     }
 
-    // Construction dynamique du filtre combiné
-    const query = {
-      [`name.${lang}`]: { $regex: `^${nameQuery}`, $options: "i" },
-    };
+    // récupération brute
+    let pokemons = await collection.find({}).toArray();
 
-    // Si un type est aussi présent, on le combine dans la recherche
-    if (typeQuery) {
-      query.type = {
-        $elemMatch: { $regex: new RegExp(`^${typeQuery}$`, "i") },
-      };
+    // filtre nom sur FR + EN
+    pokemons = pokemons.filter(p =>
+      p.name.french.toLowerCase().includes(name) ||
+      p.name.english.toLowerCase().includes(name)
+    );
+
+    // reprise filtres existants (...)
+    if (req.query.types) {
+      const typesArr = req.query.types.split(",");
+      pokemons = pokemons.filter(p =>
+        typesArr.every(t => p.type.includes(t))
+      );
     }
 
-    const pokemons = await collection.find(query).toArray();
+    if (req.query.sortBy) {
+      const key = req.query.sortBy;
+      const order = req.query.sortOrder === "asc" ? 1 : -1;
+
+      pokemons.sort((a, b) => {
+        let valA = 0, valB = 0;
+        if (a.base && a.base[key] !== undefined) {
+          valA = a.base[key]; valB = b.base[key];
+        }
+        return (valA - valB) * order;
+      });
+    }
 
     res.json(pokemons);
+
   } catch (err) {
     console.error(err);
-    res.status(500).send("erreur serveur (search)");
+    res.status(500).json({ message: "Erreur serveur (search + filtres)" });
   }
 });
+
 
 // GET /pokedex/filter
 // Filtrage avancé multi-critères (version simple avec parsing JS)

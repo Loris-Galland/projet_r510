@@ -2,7 +2,7 @@
 import { currentLang, setLanguage, initLanguage } from "./i18n.js";
 
 // URL de base pour l'API
-const BASE_URL = 'http://localhost:3000/pokedex';
+const BASE_URL = "http://localhost:3000/pokedex";
 
 // Initialisation langue choisie précédemment
 initLanguage();
@@ -18,43 +18,43 @@ selectLang.addEventListener("change", (e) => {
 // Fonction principale d'affichage des Pokémons
 // Peut prendre une URL personnalisée (utile pour filtrage multi-critères)
 async function chargerPokemons(customURL = null) {
-  const nomRecherche = document.getElementById('nameSearch').value.trim(); // recup nom saisi
+  const nomRecherche = document.getElementById("nameSearch").value.trim(); // recup nom saisi
 
   // Construction dynamique de l'URL selon la recherche par nom
   let url = customURL ? customURL : `${BASE_URL}`;
   const params = [];
-  if (!customURL) { // si pas d'URL custom, on utilise les filtres classiques
+  if (!customURL) {
+    // si pas d'URL custom, on utilise les filtres classiques
     if (nomRecherche) params.push(`name=${nomRecherche}`);
-    if (params.length > 0) url += `?${params.join('&')}`;
+    if (params.length > 0) url += `?${params.join("&")}`;
   }
 
   try {
     const reponse = await fetch(url);
-    const listePokemons = await reponse.json(); // request json 
-    const conteneur = document.getElementById('pokemon-container'); 
-    conteneur.innerHTML = '';
+    const listePokemons = await reponse.json(); // request json
+    const conteneur = document.getElementById("pokemon-container");
+    conteneur.innerHTML = "";
 
-    listePokemons.forEach(pokemon => {
-      const carte = document.createElement('div');
-      carte.className = 'pokemon-card';
+    listePokemons.forEach((pokemon) => {
+      const carte = document.createElement("div");
+      carte.className = "pokemon-card";
 
       // affichage selon langue sélectionnée
       carte.innerHTML = `
         <h3>${pokemon.name[currentLang]}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
-        <p>Type: ${pokemon.type.join(', ')}</p>
+        <p>Type: ${pokemon.type.join(", ")}</p>
       `;
 
       // Clique sur une carte et redirige vers la page détail du Pokémon
-      carte.addEventListener('click', () => {
+      carte.addEventListener("click", () => {
         window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
       });
 
       conteneur.appendChild(carte);
     });
-
   } catch (erreur) {
-    console.error('erreur load pokemon :', erreur);
+    console.error("erreur load pokemon :", erreur);
   }
 }
 
@@ -64,7 +64,7 @@ async function chargerTypesFilter() {
   const types = await res.json();
   const container = document.getElementById("typeCheckboxContainer");
 
-  types.forEach(t => {
+  types.forEach((t) => {
     const div = document.createElement("div");
     div.className = "type-option";
 
@@ -82,8 +82,9 @@ chargerTypesFilter(); // charge les types au chargement
 
 // Bouton filtrage multi-critères
 document.getElementById("filterBtn").addEventListener("click", () => {
-  const checkedTypes = Array.from(document.querySelectorAll("input[name='typeFilter']:checked"))
-    .map(c => c.value);
+  const checkedTypes = Array.from(
+    document.querySelectorAll("input[name='typeFilter']:checked")
+  ).map((c) => c.value);
 
   const attackMin = document.getElementById("attackMin").value;
   const attackMax = document.getElementById("attackMax").value;
@@ -105,10 +106,9 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   const sortBy = document.getElementById("sortBy").value;
   const sortOrder = document.getElementById("sortOrder").value;
 
-
   let url = `${BASE_URL}/filter?`;
 
-  if (checkedTypes.length > 0) url += `types=${checkedTypes.join(',')}&`;
+  if (checkedTypes.length > 0) url += `types=${checkedTypes.join(",")}&`;
   if (attackMin) url += `attackMin=${attackMin}&`;
   if (attackMax) url += `attackMax=${attackMax}&`;
   if (hpMin) url += `hpMin=${hpMin}&`;
@@ -129,58 +129,93 @@ document.getElementById("filterBtn").addEventListener("click", () => {
   if (sortBy) url += `sortBy=${sortBy}&`;
   if (sortOrder) url += `sortOrder=${sortOrder}&`;
 
-
   chargerPokemons(url);
 });
 
 // afficher tous les pokemons au démarrage
-document.getElementById('loadBtn').addEventListener('click', () => chargerPokemons());
-chargerPokemons(); // à l'"ouverture"
+document
+  .getElementById("loadBtn")
+  .addEventListener("click", () => chargerPokemons());
+chargerPokemons(); // à l'ouverture
 
 // Recherche par nom
-const inputRecherche = document.getElementById('nameSearch');
-inputRecherche.addEventListener('input', async () => {
+const inputRecherche = document.getElementById("nameSearch");
+inputRecherche.addEventListener("input", async () => {
   // trim permet de supprimer les espaces avant et après la saisie de l'utilisateur
   const recherche = inputRecherche.value.trim();
 
-  // Si le champ est vide -> recharge normal
+  // Si le champ est vide -> remet les recherches via filtres
   if (recherche.length === 0) {
-    chargerPokemons();
+    document.getElementById("filterBtn").click();
     return;
   }
 
-  // Construction de l'URL pour la recherche
-  const urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
+  // Bouton Reset Filters
+  document.getElementById("resetFilters").addEventListener("click", () => {
+    // Reset types cochés
+    document
+      .querySelectorAll("input[name='typeFilter']:checked")
+      .forEach((c) => (c.checked = false));
+
+    // Reset tous les inputs numériques
+    document
+      .querySelectorAll("input[type='number']")
+      .forEach((i) => (i.value = ""));
+
+    // Reset selects
+    document.getElementById("genderSelect").value = "";
+    document.getElementById("sortBy").value = "";
+    document.getElementById("sortOrder").value = "";
+
+    // Reset champ recherche
+    document.getElementById("nameSearch").value = "";
+
+    // Recharge tout le pokédex complet
+    chargerPokemons();
+  });
+
+  // Construction de l'URL pour la recherche + filtres actuels
+  let urlSearch = `${BASE_URL}/search?name=${recherche}&lang=${selectLang.value}`;
+
+  // Ajout automatique des filtres déjà présents dans l'UI
+  const checkedTypes = Array.from(
+    document.querySelectorAll("input[name='typeFilter']:checked")
+  ).map((c) => c.value);
+  if (checkedTypes.length > 0) urlSearch += `&types=${checkedTypes.join(",")}`;
+
+  const sortBy = document.getElementById("sortBy").value;
+  const sortOrder = document.getElementById("sortOrder").value;
+  if (sortBy) urlSearch += `&sortBy=${sortBy}`;
+  if (sortOrder) urlSearch += `&sortOrder=${sortOrder}`;
 
   try {
     const reponse = await fetch(urlSearch);
     const resultats = await reponse.json();
-    const conteneur = document.getElementById('pokemon-container');
-    conteneur.innerHTML = '';
+    const conteneur = document.getElementById("pokemon-container");
+    conteneur.innerHTML = "";
 
     if (resultats.length === 0) {
-      conteneur.innerHTML = '<p>Aucun Pokémon trouvé.</p>';
+      conteneur.innerHTML = "<p>Aucun Pokémon trouvé.</p>";
       return;
     }
 
-    resultats.forEach(pokemon => {
-      const carte = document.createElement('div');
-      carte.className = 'pokemon-card';
+    resultats.forEach((pokemon) => {
+      const carte = document.createElement("div");
+      carte.className = "pokemon-card";
       carte.innerHTML = `
         <h3>${pokemon.name[currentLang]}</h3>
         <img src="${pokemon.image.sprite}" alt="${pokemon.name[currentLang]}">
-        <p>Type: ${pokemon.type.join(', ')}</p>
+        <p>Type: ${pokemon.type.join(", ")}</p>
       `;
 
       // Même redirection sur les résultats de recherche
-      carte.addEventListener('click', () => {
+      carte.addEventListener("click", () => {
         window.location.href = `pokemon.html?id=${pokemon._id}&lang=${currentLang}`;
       });
 
       conteneur.appendChild(carte);
     });
-
   } catch (erreur) {
-    console.error('Erreur recherche Pokémon :', erreur);
+    console.error("Erreur recherche Pokémon :", erreur);
   }
 });
