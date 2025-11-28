@@ -40,11 +40,39 @@ router.get("/", async (req, res) => {
     // Fusion des types (sans doublons)
     const typesFusion = [...new Set([...p1.type, ...p2.type])];
 
-    // On renvoie juste le résultat, sans l'enregistrer en base
-    res.json({
-      name: nameFusion,
+    // Récupérer le plus grand id numérique existant pour créer un nouveau ID unique
+    const max = await collection.find().sort({ id: -1 }).limit(1).toArray();
+    const newId = max[0]?.id + 1 || 1000; // fallback si rien trouvé
+
+    // Nouveau Pokémon fusionné à sauvegarder en base
+    const newPokemon = {
+      id: newId,
+      name: {
+        french: nameFusion,
+        english: nameFusion,
+        japanese: nameFusion,
+        chinese: nameFusion,
+      },
       type: typesFusion,
       base: stats,
+      image: {
+        sprite:
+          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png",
+      },
+      profile: {
+        height: "1.0 m",
+        weight: "10.0 kg",
+      },
+      gender: "50:50",
+    };
+
+    // Sauvegarde en base
+    const result = await collection.insertOne(newPokemon);
+
+    // Renvoie de la nouvelle fusion au front
+    res.json({
+      message: "Pokémon fusion enregistré",
+      pokemon: { ...newPokemon, _id: result.insertedId },
     });
 
   } catch (err) {

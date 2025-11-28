@@ -41,20 +41,15 @@ document.getElementById("fusionBtn").addEventListener("click", async () => {
 
   try {
     const res = await fetch(`${BASE_FUSION}?id1=${id1}&id2=${id2}`);
-    if (!res.ok) {
-      console.error("Erreur HTTP fusion :", res.status);
-      const errJson = await res.json().catch(() => ({}));
-      alert(errJson.message || "Erreur lors de la fusion");
-      return;
-    }
-
-    const fusion = await res.json();
+    const data = await res.json(); // data contient maintenant data.pokemon
 
     document.getElementById("fusion-result").innerHTML = `
-      <h2>Fusion : ${fusion.name}</h2>
-      <p><strong>Types fusionnés :</strong> ${fusion.type.join(", ")}</p>
+      <h2>Fusion : ${data.pokemon.name.french}</h2>
+      <p><strong>Types fusionnés :</strong> ${data.pokemon.type.join(", ")}</p>
       <h3>Stats moyennes :</h3>
-      <pre>${JSON.stringify(fusion.base, null, 2)}</pre>
+      <pre>${JSON.stringify(data.pokemon.base, null, 2)}</pre>
+      <p><strong>Nouveau ID :</strong> ${data.pokemon.id}</p>
+      <p>Pokémon enregistré en base — retourne au Pokédex pour le voir.</p>
     `;
   } catch (err) {
     console.error("Erreur côté front fusion :", err);
