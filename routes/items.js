@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
     const collection = db.collection('items');
     const typeQuery = req.query.type; // lecture du "type" dans url
     const nameQuery = req.query.name; // lecture du "nom" dans url
+    const descQuery = req.query.description; 
     let query = {};
 
     // Si un type est demandé, on filtre dessus
@@ -22,6 +23,13 @@ router.get('/', async (req, res) => {
     if (nameQuery) {
       query['name.english'] = { $regex: `^${nameQuery}`, $options: 'i' };
     }
+
+    if (descQuery) {
+      const mots = descQuery.trim().split(/\s+/); // sépare par espaces
+      query.$and = mots.map(mot => ({
+      'description': { $regex: mot, $options: 'i' }
+    }));
+}
 
     const items = await collection.find(query).toArray(); //exec request + conversion en tab
     res.json(items);
@@ -41,6 +49,7 @@ router.get('/search', async (req, res) => {
     const collection = db.collection('items');
     const nameQuery = req.query.name || '';
     const typeQuery = req.query.type || ''; // on lit aussi le type s’il est présent dans l’URL
+    const descQuery = req.query.description || '';
 
     if (nameQuery.trim() === '') {
       return res.json([]);
@@ -56,6 +65,15 @@ router.get('/search', async (req, res) => {
       query.type = { $regex: new RegExp(`^${typeQuery}$`, 'i') };
     }
 
+    if (descQuery) {
+      const mots = descQuery.trim().split(/\s+/);
+
+      query.$and = mots.map(mot => ({
+     'description': { $regex: mot, $options: 'i' }
+    }));
+}
+
+
     const items = await collection.find(query).toArray();
 
     res.json(items);
@@ -64,4 +82,6 @@ router.get('/search', async (req, res) => {
     res.status(500).send('erreur serveur (search)');
   }
 });
+
+
 module.exports = router;

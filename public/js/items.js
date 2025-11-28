@@ -4,12 +4,14 @@ const BASE_URL = 'http://localhost:3000/items';
 async function chargerItems() {
   const filtreType = document.getElementById('typeFilter').value; //recup type saisi EN ANGLAIS
   const nomRecherche = document.getElementById('nameSearch').value.trim(); // recup nom saisi
+  const descRecherche = document.getElementById('descSearch').value.trim(); // recup description saisi
 
   // Construction dynamique de l'URL selon le filtre type et la recherche par nom
   let url = `${BASE_URL}`;
   const params = [];
   if (filtreType) params.push(`type=${filtreType}`);
   if (nomRecherche) params.push(`name=${nomRecherche}`);
+  if (descRecherche) params.push(`description=${descRecherche}`);
   if (params.length > 0) url += `?${params.join('&')}`;
 
   try {
@@ -49,6 +51,7 @@ inputRecherche.addEventListener('input', async () => {
   // trim permet de supprimer les espaces avant et après la saisie de l'utilisateur
   const recherche = inputRecherche.value.trim(); 
   const filtreType = document.getElementById('typeFilter').value; // garder le type sélectionné
+  const descRecherche = document.getElementById('descSearch').value.trim(); // recup description saisi
 
   // Si le champ est vide on recharge UNIQUEMENT avec le filtre type
   if (recherche.length === 0) {
@@ -60,6 +63,9 @@ inputRecherche.addEventListener('input', async () => {
   let urlSearch = `${BASE_URL}/search?name=${recherche}`;
   if (filtreType) {
     urlSearch += `&type=${filtreType}`;
+  }
+  if (descRecherche) {
+    urlSearch += `&description=${descRecherche}`;
   }
 
   try {
