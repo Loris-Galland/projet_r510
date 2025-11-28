@@ -2,21 +2,21 @@ const params = new URLSearchParams(window.location.search); // récupère les pa
 const id = params.get('id');
 const updateForm = document.getElementById('updateForm'); // formulaire de mise à jour
 
-fetch(`/item/${id}`)
+fetch(`/type/${id}`)
   .then(res => res.json()) // transformer la réponse en JSON
-  .then(item => {
-    const conteneur = document.getElementById('item-detail');
+  .then(type => {
+    const conteneur = document.getElementById('type-detail');
 
-    // Affichage des détails de l'item
-    let contenu = '<h1>Détail de l\'item</h1>';
+    // Affichage des détails de type
+    let contenu = '<h1>Détail du type</h1>';
     contenu += '<ul>';
 
-    // parcours des clés de l'objet item
-    const cles = Object.keys(item);
+    // parcours des clés de l'objet type
+    const cles = Object.keys(type);
 
     for (let i = 0; i < cles.length; i++) { // boucle sur les clés
       const cle = cles[i]; // clé courante
-      const valeur = item[cle]; // valeur associée à la clé
+      const valeur = type[cle]; // valeur associée à la clé
       let texteValeur; // variable pour stocker le texte à afficher
 
       // si la valeur est un objet ou un tableau, on ne fait pas ça sinon on obtient [object Object]
@@ -32,13 +32,13 @@ fetch(`/item/${id}`)
     contenu += '</ul>';
 
     // lien retour
-    contenu += '<a href="/items.html" style="display:inline-block;margin-top:20px;">← Retour aux items</a>';  
+    contenu += '<a href="/types.html" style="display:inline-block;margin-top:20px;">← Retour aux types</a>';  
     conteneur.innerHTML = contenu;
 
     // création dynamique des champs du formulaire
     updateForm.innerHTML = '';
-    Object.keys(item).forEach(cle => { 
-      const valeur = item[cle];
+    Object.keys(type).forEach(cle => { 
+      const valeur = type[cle];
       let input; // champ de saisie
 
       if (typeof valeur === 'object' && valeur !== null) { // pour les objets et tableaux
@@ -80,14 +80,14 @@ fetch(`/item/${id}`)
     });
 
       saveBtn.addEventListener('click', () => {
-      // reconstruction de l'objet updatedItem à partir des inputs
-      const updatedItem = {};
+      // reconstruction de l'objet updatedType à partir des inputs
+      const updatedType = {};
 
       // parcours de tous les inputs / textarea créés
       updateForm.querySelectorAll('input[id^="update_"], textarea[id^="update_"]').forEach(input => {
         const key = input.id.replace('update_', ''); // ex: name.english
         const keys = key.split('.');
-        let obj = updatedItem;
+        let obj = updatedType;
 
 
         // GENERE PAR IA
@@ -121,13 +121,13 @@ fetch(`/item/${id}`)
         }
       });
       // Sécurité : ne jamais envoyer de _id au serveur 
-      if (updatedItem._id) delete updatedItem._id;
+      if (updatedType._id) delete updatedType._id;
 
 
-      fetch(`/item/${id}`, { // envoie la requête put
+      fetch(`/type/${id}`, { // envoie la requête put
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedItem) // corps de la requête
+        body: JSON.stringify(updatedType) // corps de la requête
       })
       .then(res => res.json())
       .then(data => {
@@ -137,18 +137,18 @@ fetch(`/item/${id}`)
       .catch(err => console.error('erreur mise à jour:', err));
     });
 
-    // suppression de l'item
+    // suppression de type
     document.getElementById('deleteBtn').addEventListener('click', () => {
-      if (confirm('sûr de supprimer cet item ?')) {
-        fetch(`/item/${id}`, { method: 'DELETE' })
+      if (confirm('sûr de supprimer cet type ?')) {
+        fetch(`/type/${id}`, { method: 'DELETE' })
           .then(res => res.json())
           .then(data => {
             alert(data.message);
-            window.location.href = '/items.html';
+            window.location.href = '/types.html';
           })
-          .catch(err => console.error('erreur suppression item :', err));
+          .catch(err => console.error('erreur suppression type :', err));
       }
     });
 
   })
-  .catch(err => console.error('erreur chargement item :', err));
+  .catch(err => console.error('erreur chargement type :', err));

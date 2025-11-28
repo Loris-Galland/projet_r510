@@ -1,6 +1,3 @@
-// Import internationalisation
-import { currentLang, setLanguage, initLanguage } from "./i18n.js";
-
 // URL de base pour l'API
 const BASE_URL = "http://localhost:3000/pokedex";
 

@@ -8,7 +8,12 @@
 <body>
   <h1>Items</h1>
   <a href="index.html">Accueil</a></li>
-  <input type="text" id="typeFilter" placeholder="Filtrer par type item">
+  <a href="new-item.html">Créer un item</a>
+  <input type="text" id="nameSearch" placeholder="Rechercher par nom">
+  <select id="typeFilter">
+  <option value="">Tous les types</option>
+  </select>
+  <input type="text" id="descSearch" placeholder="Rechercher par description">
   <button id="loadBtn">Charger</button>
   <div id="item-container"></div>
   <script src="js/items.js"></script>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer un nouveau Item</title>
+  <link rel="stylesheet" href="/css/new-pokemon.css">
+</head>
+<body>
+  <div id="form-container">
+    <h1>Ajouter une nouvelle attaque</h1>
+    <form id="newMoveForm">
+      <label>Nom (Anglais) :</label>
+      <input type="text" id="nameEnglish" required>
+
+      <label>Nom (Chinois) :</label>
+      <input type="text" id="nameChinese">
+
+      <label> Nom (Japonais)</label>
+        <input type="text" id="nameJapanese">
+      
+      <label>Puissance :</label>
+        <input type="number" id="power" placeholder="50" required>
+        
+        <label>Précision :</label>
+        <input type="number" id="accuracy" placeholder="100" required>
+
+        <label>PP :</label>
+        <input type="number" id="pp" placeholder="20" required>
+
+      <label>Catégorie :</label>
+      <input type="text" id="type" placeholder="ex: Physique" required>
+
+
+      <button type="submit">Créer l'attaque</button>
+    </form>
+
+    <a href="/moves.html">Retour aux attaques</a>
+  </div>
+
+  <script src="js/new-move.js"></script>
+</body>
+</html>

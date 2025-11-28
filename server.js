@@ -8,13 +8,19 @@ const { initMongo } = require('./db/mongo');
 // ROUTING
 const pokedexRoutes = require('./routes/pokedex');
 const itemRoutes = require('./routes/items');
-const moveRoutes = require('./routes/moves');
-const typeRoutes = require('./routes/types');
+const movesRoutes = require('./routes/moves');
+const typesRoutes = require('./routes/types');
+const typeRoute = require('./routes/type');
 const itemRoute = require('./routes/item');
+const moveRoutes = require('./routes/move');
 const pokemonRoutes = require('./routes/pokemon')
 const newPokemonRoute = require('./routes/newPokemon');
 const compareRoutes = require('./routes/compare');
+const newItemRoute = require('./routes/newItem');
+const newMoveRoute = require('./routes/newMove');
+const newTypeRoute = require('./routes/newType');
 
+// APP INITIALIZATION
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -22,12 +28,17 @@ app.use(express.json());
 // Use routes
 app.use('/pokedex', pokedexRoutes);
 app.use('/items', itemRoutes);
-app.use('/moves', moveRoutes);
-app.use('/types', typeRoutes);
+app.use('/moves', movesRoutes);
+app.use('/types', typesRoutes);
+app.use('/type', typeRoute);
 app.use('/item', itemRoute);
-app.use('/pokemon', pokemonRoutes)
+app.use('/pokemon', pokemonRoutes);
+app.use('/move', moveRoutes);
 app.use('/new-pokemon', newPokemonRoute);
 app.use('/compare', compareRoutes);
+app.use('/new-item', newItemRoute);
+app.use('/new-move', newMoveRoute);
+app.use('/new-type', newTypeRoute);
 
 // Files static
 app.use(express.static(path.join(__dirname, 'public')));
