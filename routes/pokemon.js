@@ -45,4 +45,32 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// PUT /pokemon/:id
+// Met à jour les informations d'un Pokémon
+router.put('/:id', async (req, res) => {
+  try {
+    const db = getDb();
+    const collection = db.collection('pokedex');
+    const { id } = req.params;
+    const updates = req.body;
+    
+    // (MongoDB interdit de modifier le champ _id)
+    delete updates._id;
+
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updates }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: "Pokémon introuvable pour mise à jour" });
+    }
+
+    res.json({ message: "Pokémon mis à jour avec succès !" });
+  } catch (err) {
+    console.error("Erreur update :", err);
+    res.status(500).json({ message: "Erreur serveur lors de la mise à jour" });
+  }
+});
+
 module.exports = router;
