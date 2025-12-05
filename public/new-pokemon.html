@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer un nouveau Pokémon</title>
+  <link rel="stylesheet" href="/css/new-pokemon.css">
+</head>
+<body>
+  <div id="form-container">
+    <h1>Ajouter un nouveau Pokémon</h1>
+    <form id="newPokemonForm">
+      <!-- IDs -->
+      <label>_id (optionnel) :</label>
+      <input type="text" id="_id" placeholder="Ex: 68da47eb799c9f31ba545f5a">
+
+      <label>id (optionnel) :</label>
+      <input type="number" id="pokeId" placeholder="Ex: 1">
+
+      <!-- Names -->
+      <h3>Nom</h3>
+      <label>Français :</label>
+      <input type="text" id="nameFrench" required placeholder="Ex: Bulbizarre">
+
+      <label>Anglais :</label>
+      <input type="text" id="nameEnglish" placeholder="Ex: Bulbasaur">
+
+      <label>Japonais :</label>
+      <input type="text" id="nameJapanese" placeholder="Ex: フシギダネ">
+
+      <label>Chinois :</label>
+      <input type="text" id="nameChinese" placeholder="Ex: 妙蛙种子">
+
+      <!-- Type -->
+      <label>Type(s) :</label>
+      <input type="text" id="types" placeholder="Ex: Grass, Poison" required>
+
+      <!-- Base -->
+      <h3>Stats de base</h3>
+      <label>HP :</label>
+      <input type="number" id="hp" placeholder="Ex: 45" required>
+
+      <label>Attack :</label>
+      <input type="number" id="attack" placeholder="Ex: 49" required>
+
+      <label>Defense :</label>
+      <input type="number" id="defense" placeholder="Ex: 49" required>
+
+      <label>Sp. Attack :</label>
+      <input type="number" id="spAttack" placeholder="Ex: 65">
+
+      <label>Sp. Defense :</label>
+      <input type="number" id="spDefense" placeholder="Ex: 65">
+
+      <label>Speed :</label>
+      <input type="number" id="speed" placeholder="Ex: 45">
+
+      <label>Species :</label>
+      <input type="text" id="species" placeholder="Ex: Seed Pokémon">
+
+      <!-- Description -->
+      <label>Description :</label>
+      <textarea id="description" rows="3" placeholder="Ex: Bulbasaur can be seen napping in bright sunlight..."></textarea>
+
+      <!-- Evolution -->
+      <label>Evolution (format JSON) :</label>
+      <textarea id="evolutionNext" placeholder='Ex: [["2","Level 16"]]'></textarea>
+
+      <!-- Profile -->
+      <h3>Profile</h3>
+      <label>Height :</label>
+      <input type="text" id="height" placeholder="Ex: 0.7 m">
+
+      <label>Weight :</label>
+      <input type="text" id="weight" placeholder="Ex: 6.9 kg">
+
+      <!-- Egg -->
+      <label>Egg (types, séparés par des virgules) :</label>
+      <input type="text" id="egg" placeholder="Ex: Monster, Grass">
+
+      <!-- Ability -->
+      <label>Ability (format JSON) :</label>
+      <textarea id="ability" placeholder='Ex: [["Overgrow","false"],["Chlorophyll","true"]]'></textarea>
+
+      <!-- Gender -->
+      <label>Gender :</label>
+      <input type="text" id="gender" placeholder="Ex: 87.5:12.5">
+
+      <!-- Images -->
+      <h3>Images</h3>
+      <label>Sprite :</label>
+      <input type="text" id="sprite" placeholder="Ex: https://raw.githubusercontent.com/.../sprite.png">
+
+      <label>Thumbnail :</label>
+      <input type="text" id="thumbnail" placeholder="Ex: https://raw.githubusercontent.com/.../thumb.png">
+
+      <label>Hires :</label>
+      <input type="text" id="hires" placeholder="Ex: https://raw.githubusercontent.com/.../hires.png">
+
+      <button type="submit">Créer le Pokémon</button>
+    </form>
+
+    <a href="/pokedex.html">Retour au Pokédex</a>
+  </div>
+
+  <script src="js/new-pokemon.js"></script>
+</body>
+</html>

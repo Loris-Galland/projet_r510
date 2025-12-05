@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokémon MongoDB</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>Pokédex</h1>
+  <a href="index.html">Accueil</a></li>
+  <a href="new-pokemon.html">Créer un Pokémon</a>
+  <a href="fusion.html">Fusion Pokémon</a>
+  <a href="compare.html">Comparer des Pokémons</a>
+
+  <input type="text" id="nameSearch" placeholder="Rechercher par nom">
+  <button id="loadBtn">Charger</button>
+
+  <select id="langSelect">
+    <option value="fr">Français</option>
+    <option value="en">English</option>
+    <option value="jp">日本語</option>
+    <option value="cn">中文</option>
+  </select>
+
+  <div id="typeCheckboxContainer"></div>
+
+  <div id="filters">
+
+    <input type="number" id="attackMin" placeholder="Attack min">
+    <input type="number" id="attackMax" placeholder="Attack max">
+    <input type="number" id="hpMin" placeholder="HP min">
+    <input type="number" id="hpMax" placeholder="HP max">
+    <input type="number" id="weightMin" placeholder="Poids min (kg)">
+    <input type="number" id="weightMax" placeholder="Poids max (kg)">
+    <input type="number" id="heightMin" placeholder="Taille min (m)">
+    <input type="number" id="heightMax" placeholder="Taille max (m)">
+    <input type="number" id="evoLevel" placeholder="Niveau d'évolution (ex : 30)">
+
+    <select id="evolutionCount">
+      <option value="">Évolution(s) ?</option>
+      <option value="0">Aucune évolution</option>
+      <option value="1">Une évolution</option>
+      <option value="2">Deux évolutions</option>
+    </select>
+
+    <input type="number" id="spAtkMin" placeholder="Sp. Attack min">
+    <input type="number" id="spAtkMax" placeholder="Sp. Attack max">
+    <input type="number" id="spDefMin" placeholder="Sp. Defense min">
+    <input type="number" id="spDefMax" placeholder="Sp. Defense max">
+    <input type="number" id="speedMin" placeholder="Speed min">
+    <input type="number" id="speedMax" placeholder="Speed max">
+
+    <select id="genderSelect">
+      <option value="">Genre ?</option>
+      <option value="male">Mâle dominant</option>
+      <option value="female">Femelle dominante</option>
+      <option value="both">Égalité</option>
+    </select>
+
+    <select id="sortBy">
+      <option value="">Trier par...</option>
+      <option value="HP">HP</option>
+      <option value="Attack">Attack</option>
+      <option value="Defense">Defense</option>
+      <option value="Sp. Attack">Sp. Attack</option>
+      <option value="Sp. Defense">Sp. Defense</option>
+      <option value="Speed">Speed</option>
+      <option value="weight">Poids</option>
+      <option value="height">Taille</option>
+    </select>
+
+    <select id="sortOrder">
+        <option value="">Ordre</option>
+      <option value="desc">Décroissant</option>
+      <option value="asc">Croissant</option>
+    </select>
+
+
+    <button id="filterBtn">Filtrer</button>
+    <button id="resetFilters">Reset Filters</button>
+  </div>
+
+  <div id="pokemon-container"></div>
+
+  <!-- type="module" permet d'utiliser import/export dans ce fichier JavaScript -->
+  <script type="module" src="js/pokedex.js"></script>
+</body>
+</html>

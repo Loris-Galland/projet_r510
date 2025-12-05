@@ -1,0 +1,90 @@
+/* Reset minimal */
+body, h1, p, a {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fond et centrage global */
+body {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Conteneur principal */
+#item-detail {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+#item-detail:hover {
+  transform: translateY(-5px);
+}
+
+/* Titre */
+#item-detail h1 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Image */
+#item-detail img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 2px solid #eee;
+  background-color: #fafafa;
+}
+
+/* Description et type */
+#item-detail p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+#item-detail ul {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+#item-detail li {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.6;
+  border-bottom: 1px solid #eee;
+  padding: 5px 0;
+}
+
+/* Bouton Retour */
+#item-detail a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 25px;
+  background-color: #ffcb05;
+  color: #2a75bb;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+#item-detail a:hover {
+  background-color: #ffdb4d;
+}

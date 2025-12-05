@@ -1,0 +1,109 @@
+/* Reset minimal */
+body, h1, p, a, ul, li {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fond et centrage global */
+body {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Conteneur principal */
+#pokemon-detail {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+#pokemon-detail:hover {
+  transform: translateY(-5px);
+}
+
+/* Titre */
+#pokemon-detail h1 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Nom japonais / anglais */
+#pokemon-detail h2 {
+  font-size: 1.2em;
+  color: #777;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+/* Image */
+#pokemon-detail img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 2px solid #eee;
+  background-color: #fafafa;
+}
+
+/* Types */
+.types {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.type-badge {
+  background-color: #2a75bb;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Liste d’infos */
+#pokemon-detail ul {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+#pokemon-detail li {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.6;
+  border-bottom: 1px solid #eee;
+  padding: 5px 0;
+}
+
+/* Bouton Retour */
+#pokemon-detail a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 25px;
+  background-color: #ffcb05;
+  color: #2a75bb;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+#pokemon-detail a:hover {
+  background-color: #ffdb4d;
+}

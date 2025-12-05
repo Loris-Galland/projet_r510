@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fusion Pokémon</title>
+    <link rel="stylesheet" href="css/fusion.css" />
+  </head>
+  <body>
+    <h1>Fusion Pokémon</h1>
+    <a href="pokedex.html">Retour au Pokédex</a>
+
+    <div id="fusion-selectors">
+      <select id="selectPokemon1">
+        <option value="">Choisir Pokémon 1</option>
+      </select>
+
+      <select id="selectPokemon2">
+        <option value="">Choisir Pokémon 2</option>
+      </select>
+
+      <button id="fusionBtn">Fusionner</button>
+    </div>
+
+    <div id="fusion-container">
+      <div id="pokemon1-card" class="fusion-card"></div>
+
+      <div id="pokemon2-card" class="fusion-card"></div>
+    </div>
+
+    <div id="fusion-result"></div>
+
+    <script type="module" src="js/fusion.js"></script>
+  </body>
+</html>
