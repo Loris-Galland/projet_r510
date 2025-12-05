@@ -2,10 +2,14 @@ Projet R510 - Node.js & MongoDB
 
 Description du projet
 ---------------------
-Ce projet contient une application qui intéragit avec une base MongoDB pour faire toutes sortes d'opération sur des pokémons, des moves, des types et items. Le backend est développé avec Node.js + Express. Le frontend utilise du JavaScript simple et interagit
-avec l’API via fetch().
+Ce projet contient une application web complète permettant d'interagir avec une base **MongoDB** pour gérer les données de l'univers Pokémon : **Pokédex**, **attaques (Moves)**, **objets (Items)** et **Types**. Le backend est développé avec **Node.js** et **Express**, fournissant une API REST complète (**CRUD**). L'API inclut des fonctionnalités avancées de filtrage, de tri, ainsi que des fonctions uniques comme la **Fusion** et la **Comparaison** de Pokémon.
 
-📁 Structure du projet
+Le frontend utilise du JavaScript simple pour consommer cette API via `fetch()` et affiche les données de manière dynamique.
+
+***
+
+## 📁 Structure du projet
+
 ```bash
 C:.
 ├── db
@@ -13,29 +17,64 @@ C:.
 │
 ├── node_modules              → Modules Node.js installés automatiquement
 │
-├── public                    → Contient tout le code front-end
+├── public                    → Contient tout le code front-end (HTML, CSS, JS)
 │   ├── assets                → Images, icônes, ressources diverses
 │   ├── css
-│   │   └── style.css         → Feuille de style principale
+│   │   ├── style.css         → Style principal (cartes liste)
+│   │   ├── new-pokemon.css   → Style des formulaires de création
+│   │   ├── pokemon-details.css → Style des pages de détails de Pokémon/Type
+│   │   ├── item-detail.css   → Style des pages de détails d'Item
+│   │   ├── move-detail.css   → Style des pages de détails d'Attaque
+│   │   └── fusion.css        → Style de la page de Fusion
+│   │
 │   ├── js
-│   │   ├── index.js          → Script de la page d’accueil
-│   │   ├── pokedex.js        → Affichage et filtrage des Pokémons
-│   │   ├── items.js          → Affichage et filtrage des objets
-│   │   ├── moves.js          → Affichage et filtrage des attaques
-│   │   └── types.js          → Affichage et filtrage des types disponibles
+│   │   ├── i18n.js           → Gestion de la langue d'affichage des noms
+│   │   ├── pokedex.js        → Affichage, filtrage et tri des Pokémons
+│   │   ├── pokemon.js        → Détails, modification (PUT) et suppression (DELETE) d'un Pokémon
+│   │   ├── new-pokemon.js    → Logique de création (POST) d'un Pokémon
+│   │   ├── items.js          → Affichage et filtrage des objets (Items)
+│   │   ├── item.js           → Détails, modification (PUT) et suppression (DELETE) d'un Item
+│   │   ├── new-item.js       → Logique de création (POST) d'un Item
+│   │   ├── moves.js          → Affichage et recherche des attaques (Moves)
+│   │   ├── move.js           → Détails, modification (PUT) et suppression (DELETE) d'une Attaque
+│   │   ├── new-move.js       → Logique de création (POST) d'une Attaque
+│   │   ├── types.js          → Affichage des types disponibles
+│   │   ├── type.js           → Détails, modification (PUT) et suppression (DELETE) d'un Type
+│   │   ├── new-type.js       → Logique de création (POST) d'un Type
+│   │   ├── fusion.js         → Logique de la fonctionnalité de fusion
+│   │   └── compare.js        → Logique du comparateur de stats
 │   │
 │   ├── index.html            → Page d’accueil avec navigation
-│   ├── pokedex.html          → Page du Pokédex
-│   ├── items.html            → Page des objets
-│   ├── moves.html            → Page des attaques
-│   └── types.html            → Page des types
+│   ├── pokedex.html          → Page du Pokédex (Liste et Filtres Avancés)
+│   ├── pokemon.html          → Page Détail/Édition d'un Pokémon
+│   ├── new-pokemon.html      → Page de création d'un Pokémon
+│   ├── items.html            → Page des objets (Liste)
+│   ├── item.html             → Page Détail/Édition d'un Item
+│   ├── new-item.html         → Page de création d'un Item
+│   ├── moves.html            → Page des attaques (Liste)
+│   ├── move.html             → Page Détail/Édition d'une Attaque
+│   ├── new-move.html         → Page de création d'une Attaque
+│   ├── types.html            → Page des types (Liste)
+│   ├── type.html             → Page Détail/Édition d'un Type
+│   ├── new-type.html         → Page de création d'un Type
+│   ├── fusion.html           → Page de la fonctionnalité de fusion
+│   └── compare.html          → Page du comparateur de Pokémon
 │
 ├── routes                    → Routes Express (API backend)
-│   ├── pokedex.js            → Route pour les Pokémons (+ filtres)
-│   ├── items.js              → Route pour les objets
-│   ├── moves.js              → Route pour les attaques
-│   ├── types.js              → Route pour les types
-│   └── pokemon.js            → Route dédiée à un Pokémon précis
+│   ├── pokedex.js            → Route principale pour les Pokémons (+ filtres/tri)
+│   ├── pokemon.js            → Route CRUD pour un seul Pokémon (GET, PUT, DELETE)
+│   ├── newPokemon.js         → Route pour la création d'un Pokémon (POST)
+│   ├── items.js              → Route principale pour les objets (+ filtres/recherche)
+│   ├── item.js               → Route CRUD pour un seul Item (GET, PUT, DELETE)
+│   ├── newItem.js            → Route pour la création d'un Item (POST)
+│   ├── moves.js              → Route principale pour les attaques (+ filtres/recherche)
+│   ├── move.js               → Route CRUD pour une seule Attaque (GET, PUT, DELETE)
+│   ├── newMove.js            → Route pour la création d'une Attaque (POST)
+│   ├── types.js              → Route principale pour les types (Liste)
+│   ├── type.js               → Route CRUD pour un seul Type (GET, PUT, DELETE)
+│   ├── newType.js            → Route pour la création d'un Type (POST)
+│   ├── fusion.js             → Route pour la fusion de Pokémon (GET)
+│   └── compare.js            → Route pour la comparaison de Pokémon (GET)
 │
 ├── .gitignore                → Fichiers à exclure du dépôt Git
 ├── package.json              → Configuration du projet Node.js
